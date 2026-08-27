@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Peminjam extends Model
+class Peminjam extends Authenticatable
 {
     protected $table = 'peminjams';
     protected $primaryKey = 'id_peminjam';
@@ -12,6 +12,10 @@ class Peminjam extends Model
         'nama',
         'asal_organisasi',
         'email',
+        'password',
+    ];
+
+    protected $hidden = [
         'password',
     ];
 
