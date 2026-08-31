@@ -4,45 +4,78 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Peminjam;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Register Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller registers new Peminjam (borrower) accounts. Admin
+    | accounts are provisioned separately (see AdminSeeder) and are not
+    | self-registered here.
+    |
+    */
+
+    use RegistersUsers;
+
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/peminjam/dashboard';
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('guest:peminjam');
     }
 
-    public function showRegistrationForm()
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
     {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'nama' => ['required', 'string', 'max:255'],
-            'asal_organisasi' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:peminjams'],
+        return Validator::make($data, [
+            'nama' => ['required', 'string', 'max:100'],
+            'asal_organisasi' => ['required', 'string', 'max:100'],
+            'email' => ['required', 'string', 'email', 'max:100', 'unique:peminjams'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
+    }
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $peminjam = Peminjam::create([
-            'nama' => $request->nama,
-            'asal_organisasi' => $request->asal_organisasi,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+    /**
+     * Create a new Peminjam instance after a valid registration.
+     *
+     * @return Peminjam
+     */
+    protected function create(array $data)
+    {
+        return Peminjam::create([
+            'nama' => $data['nama'],
+            'asal_organisasi' => $data['asal_organisasi'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
+    }
 
-        Auth::guard('peminjam')->login($peminjam);
-
-        return redirect('/peminjam/dashboard');
+    /**
+     * Get the guard to be used during registration.
+     */
+    protected function guard()
+    {
+        return Auth::guard('peminjam');
     }
 }

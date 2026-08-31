@@ -4,70 +4,91 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kategori;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class KategoriController extends Controller
 {
-    public function __construct()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(): View
     {
-        $this->middleware('auth:admin');
-    }
+        $categories = Kategori::withCount('barangs')
+            ->orderBy('nama_kategori')
+            ->paginate(10);
 
-    public function index()
-    {
-        $categories = Kategori::orderBy('nama_kategori')->get();
         return view('admin.kategori.index', compact('categories'));
     }
 
-    public function create()
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(): View
     {
         return view('admin.kategori.create');
     }
 
-    public function store(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request): RedirectResponse
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'nama_kategori' => ['required', 'string', 'max:100', 'unique:categories,nama_kategori'],
         ]);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-        Kategori::create($validator->validated());
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
+
+        Kategori::create($validated);
+
+        return redirect()
+            ->route('admin.kategori.index')
+            ->with('status', 'Kategori berhasil ditambahkan.');
     }
 
-    public function show( int $id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Kategori $kategori): View
     {
-        $kategori = Kategori::with('barangs')->findOrFail($id);
-        return view('admin.kategori.show', compact('kategori'));
-    }
-
-    public function edit(int $id)
-    {
-        $kategori = Kategori::findOrFail($id);
         return view('admin.kategori.edit', compact('kategori'));
     }
 
-    public function update(Request $request,int $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Kategori $kategori): RedirectResponse
     {
-        $kategori = Kategori::findOrFail($id);
-        $validator = Validator::make($request->all(), ['nama_kategori' => ['required', 'string', 'max:100', 'unique:categories,nama_kategori,' . $kategori->id_kategori . ',id_kategori'],
+        $validated = $request->validate([
+            'nama_kategori' => [
+                'required', 'string', 'max:100',
+                'unique:categories,nama_kategori,'.$kategori->id_kategori.',id_kategori',
+            ],
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();}
-        $kategori->update($validator->validated());
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
+        $kategori->update($validated);
+
+        return redirect()
+            ->route('admin.kategori.index')
+            ->with('status', 'Kategori berhasil diperbarui.');
     }
 
-    public function destroy(int $id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Kategori $kategori): RedirectResponse
     {
-        $kategori = Kategori::findOrFail($id);
-        if ($kategori->barangs()->exists()) {
-            return back()->with('error', 'Kategori tidak bisa dihapus karena masih dipakai oleh barang.');}
+        try {
+            $kategori->delete();
+        } catch (QueryException) {
+            return redirect()
+                ->route('admin.kategori.index')
+                ->with('error', 'Kategori tidak bisa dihapus karena masih dipakai oleh barang.');
+        }
 
-        $kategori->delete();
-        return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus.');
+        return redirect()
+            ->route('admin.kategori.index')
+            ->with('status', 'Kategori berhasil dihapus.');
     }
 }
