@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class ProfileController extends Controller
+class ProfilController extends Controller
 {
     public function __construct()
     {
@@ -21,7 +21,7 @@ class ProfileController extends Controller
         /** @var \App\Models\Peminjam $peminjam */
         $peminjam = Auth::guard('peminjam')->user();
 
-        return view('peminjam.profile.edit', compact('peminjam'));
+        return view('peminjam.profil.edit', compact('peminjam'));
     }
 
     // PUT/PATCH /peminjam/profile

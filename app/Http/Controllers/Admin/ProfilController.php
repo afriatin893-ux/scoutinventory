@@ -8,8 +8,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 
-class ProfileController extends Controller
+class ProfilController extends Controller
 {
+    public function edit()
+    {
+        $admin = Auth::guard('admin')->user();
+
+        return view('admin.profil.edit', compact('admin'));
+    }
+
     public function update(Request $request)
     {
         $request->validate([
@@ -18,7 +25,6 @@ class ProfileController extends Controller
             'password' => 'nullable|string|min:8',
         ]);
 
-        /** @var Admin $admin */
         $admin = Auth::user();
         $data = [
             'nama' => $request->nama,

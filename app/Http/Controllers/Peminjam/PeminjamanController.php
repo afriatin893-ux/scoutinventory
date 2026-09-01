@@ -76,7 +76,7 @@ class PeminjamanController extends Controller
             ->with('success', 'Pengajuan peminjaman berhasil dikirim, menunggu verifikasi admin.');
     }
 
-    public function show($id)
+    public function show( int $id)
     {
         $peminjaman = Peminjaman::with(['detailPeminjamans.barang', 'admin', 'pengembalians'])
             ->where('id_peminjam', Auth::guard('peminjam')->id())

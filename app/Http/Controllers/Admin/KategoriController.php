@@ -14,11 +14,13 @@ class KategoriController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         $categories = Kategori::withCount('barangs')
+            ->when($request->filled('q'), fn ($query) => $query->where('nama_kategori', 'like', '%' . $request->q . '%'))
             ->orderBy('nama_kategori')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('admin.kategori.index', compact('categories'));
     }
@@ -38,6 +40,7 @@ class KategoriController extends Controller
     {
         $validated = $request->validate([
             'nama_kategori' => ['required', 'string', 'max:100', 'unique:categories,nama_kategori'],
+            'deskripsi' => ['nullable', 'string', 'max:1000'],
         ]);
 
         Kategori::create($validated);
@@ -62,9 +65,12 @@ class KategoriController extends Controller
     {
         $validated = $request->validate([
             'nama_kategori' => [
-                'required', 'string', 'max:100',
-                'unique:categories,nama_kategori,'.$kategori->id_kategori.',id_kategori',
+                'required',
+                'string',
+                'max:100',
+                'unique:categories,nama_kategori,' . $kategori->id_kategori . ',id_kategori',
             ],
+            'deskripsi' => ['nullable', 'string', 'max:1000'],
         ]);
 
         $kategori->update($validated);
@@ -73,7 +79,6 @@ class KategoriController extends Controller
             ->route('admin.kategori.index')
             ->with('status', 'Kategori berhasil diperbarui.');
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -83,6 +88,7 @@ class KategoriController extends Controller
             $kategori->delete();
         } catch (QueryException) {
             return redirect()
+
                 ->route('admin.kategori.index')
                 ->with('error', 'Kategori tidak bisa dihapus karena masih dipakai oleh barang.');
         }

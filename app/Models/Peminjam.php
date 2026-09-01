@@ -13,6 +13,8 @@ class Peminjam extends Authenticatable
         'asal_organisasi',
         'email',
         'password',
+        'no_telepon',
+        'foto',
     ];
 
     protected $hidden = [

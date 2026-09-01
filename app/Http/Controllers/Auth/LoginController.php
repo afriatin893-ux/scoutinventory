@@ -11,6 +11,14 @@ class LoginController extends Controller
     // Menampilkan halaman login
     public function showLogin()
     {
+        if (Auth::guard('admin')->check()) {
+            return redirect('/admin/dashboard');
+        }
+
+        if (Auth::guard('peminjam')->check()) {
+            return redirect('/peminjam/dashboard');
+        }
+
         return view('auth.login');
     }
 

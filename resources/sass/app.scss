@@ -1,1 +1,230 @@
 @import "bootstrap/scss/bootstrap";
+
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.navbar {
+    border-bottom: 3px solid $primary;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: $primary !important;
+}
+
+.card {
+    box-shadow: 0 2px 10px rgba(58, 46, 34, 0.06);
+}
+
+.card-header {
+    background-color: rgba(122, 74, 34, 0.06);
+    font-weight: 700;
+    border-bottom: 1px solid $card-border-color;
+}
+
+.btn-primary {
+    --bs-btn-hover-bg: #5f3a1a;
+    --bs-btn-hover-border-color: #5f3a1a;
+}
+
+// Kartu form login/register
+.auth-card {
+    border: none;
+    border-top: 4px solid $primary;
+}
+
+// Foto profil bulat
+.profile-photo-wrapper {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin: 0 auto .75rem;
+}
+
+.profile-photo-wrapper img,
+.profile-photo-wrapper .profile-photo-placeholder {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid $primary;
+    display: block;
+}
+
+.profile-photo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(122, 74, 34, 0.08);
+    color: $primary;
+    font-size: .85rem;
+}
+
+.profile-photo-input {
+    max-width: 260px;
+    margin: 0 auto;
+}
+
+.brand-badge {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: rgba(122, 74, 34, 0.1);
+    color: $primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-page {
+    min-height: calc(100vh - 90px);
+}
+
+// =========================================================
+// Guest layout (halaman login)
+// =========================================================
+.guest-topbar {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 1.5rem;
+    background-color: #fff;
+    border-bottom: 3px solid $primary;
+
+    .guest-topbar-title {
+        font-weight: 700;
+        border: 1px solid $card-border-color;
+        padding: .35rem .9rem;
+        border-radius: .25rem;
+        font-size: .95rem;
+    }
+}
+
+.guest-content {
+    min-height: calc(100vh - 56px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+// =========================================================
+// App shell (layout admin & peminjam dengan sidebar)
+// =========================================================
+.app-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 1.5rem;
+    background-color: #fff;
+    border-bottom: 1px solid $card-border-color;
+    flex-shrink: 0;
+
+    .app-topbar-title {
+        font-weight: 700;
+        font-size: 1rem;
+    }
+}
+
+.app-topbar-user {
+    color: $body-color;
+    text-decoration: none;
+    font-weight: 600;
+
+    &::after {
+        margin-left: .4rem;
+    }
+
+    .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: $primary;
+        margin-left: .35rem;
+    }
+}
+
+.app-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.app-sidebar {
+    width: 230px;
+    flex-shrink: 0;
+    background-color: #fff;
+    border-right: 1px solid $card-border-color;
+    padding-top: .5rem;
+
+    nav {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.sidebar-link {
+    display: block;
+    padding: .75rem 1.25rem;
+    color: $body-color;
+    text-decoration: none;
+    border-bottom: 1px solid $card-border-color;
+    font-size: .925rem;
+
+    &:hover:not(.disabled) {
+        background-color: rgba(122, 74, 34, 0.06);
+        color: $primary;
+    }
+
+    &.active {
+        background-color: $primary;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    &.disabled {
+        color: $text-muted;
+        cursor: not-allowed;
+    }
+}
+
+.app-content {
+    flex: 1;
+    padding: 2rem;
+    min-width: 0;
+}
+
+.page-header {
+    margin-bottom: 1.5rem;
+
+    h1 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: .25rem;
+    }
+
+    .page-subtitle {
+        color: $text-muted;
+        font-size: .875rem;
+        margin-bottom: 0;
+    }
+}
+
+.toolbar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
