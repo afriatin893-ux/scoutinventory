@@ -4,23 +4,22 @@ namespace App\Http\Controllers\Peminjam;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\Kategori;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class BarangController extends Controller
 {
-    public function __construct()
+    public function index(Request $request): View
     {
-        $this->middleware('auth:peminjam');
-    }
+        $barangs = Barang::with('kategori')
+            ->when($request->id_kategori, fn ($q) => $q->where('id_kategori', $request->id_kategori))
+            ->orderBy('nama_barang')
+            ->paginate(10)
+            ->withQueryString();
 
-    public function index()
-    {
-        $barangs = Barang::with('kategori')->orderBy('nama_barang')->get();
-        return view('peminjam.barang.index', compact('barangs'));
-    }
+        $kategoris = Kategori::orderBy('nama_kategori')->get();
 
-    public function show(int $id)
-    {
-        $barang = Barang::with('kategori')->findOrFail($id);
-        return view('peminjam.barang.show', compact('barang'));
+        return view('peminjam.barang.index', compact('barangs', 'kategoris'));
     }
 }

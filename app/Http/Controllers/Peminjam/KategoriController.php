@@ -17,6 +17,6 @@ class KategoriController extends Controller
             ->orderBy('nama_kategori')
             ->paginate(10);
 
-        return view('peminjam.kategori.index', compact('kategoris'));
+        return view('peminjam.kategori.index', compact('categories'));
     }
 }

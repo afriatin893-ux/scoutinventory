@@ -1,10 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Peminjam\DashboardController;
+use App\Http\Controllers\Admin\BarangController;
+use App\Http\Controllers\Admin\PeminjamanController;
+use App\Http\Controllers\Admin\PengembalianController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', function () {return view('welcome');});
 
 Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLogin'])->name('login');
 
@@ -16,13 +20,11 @@ Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, '
 
 Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
-Route::get('/admin/dashboard', function () {
-    return 'Selamat datang Admin';
-})->middleware('auth:admin')->name('admin.dashboard');
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth:admin')
+    ->name('admin.dashboard');
 
-Route::get('/peminjam/dashboard', function () {
-    return 'Selamat datang Peminjam';
-})->middleware('auth:peminjam')->name('peminjam.dashboard');
+Route::get('/peminjam/dashboard', function () {return 'Selamat datang Peminjam';})->middleware('auth:peminjam')->name('peminjam.dashboard');
 
 Route::get('/admin/kategori', [\App\Http\Controllers\Admin\KategoriController::class, 'index'])->middleware('auth:admin')->name('admin.kategori.index');
 
@@ -30,11 +32,47 @@ Route::get('/admin/kategori/create', [\App\Http\Controllers\Admin\KategoriContro
 
 Route::post('/admin/kategori', [\App\Http\Controllers\Admin\KategoriController::class, 'store'])->middleware('auth:admin')->name('admin.kategori.store');
 
-Route::get('/admin/kategori/{id}/edit', [\App\Http\Controllers\Admin\KategoriController::class, 'edit'])->middleware('auth:admin')->name('admin.kategori.edit');
+Route::get('/admin/kategori/{kategori}/edit', [\App\Http\Controllers\Admin\KategoriController::class, 'edit'])
+    ->middleware('auth:admin')
+    ->name('admin.kategori.edit');
 
-Route::put('/admin/kategori/{id}', [\App\Http\Controllers\Admin\KategoriController::class, 'update'])->middleware('auth:admin')->name('admin.kategori.update');
+Route::put('/admin/kategori/{kategori}', [\App\Http\Controllers\Admin\KategoriController::class, 'update'])
+    ->middleware('auth:admin')
+    ->name('admin.kategori.update');
 
-Route::delete('/admin/kategori/{id}', [\App\Http\Controllers\Admin\KategoriController::class, 'destroy'])->middleware('auth:admin')->name('admin.kategori.destroy');
+Route::delete('/admin/kategori/{kategori}', [\App\Http\Controllers\Admin\KategoriController::class, 'destroy'])
+    ->middleware('auth:admin')
+    ->name('admin.kategori.destroy');
+
+Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('barang', BarangController::class);
+});
+
+Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/peminjaman/pending', [PeminjamanController::class, 'pending'])
+        ->name('peminjaman.pending');
+
+    Route::get('/peminjaman', [PeminjamanController::class, 'index'])
+        ->name('peminjaman.index');
+
+    Route::get('/peminjaman/{peminjaman}', [PeminjamanController::class, 'show'])
+        ->name('peminjaman.show');
+
+    Route::put('/peminjaman/{peminjaman}/verifikasi', [PeminjamanController::class, 'verifikasi'])
+        ->name('peminjaman.verifikasi');
+
+});
+
+Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/pengembalian/{idPeminjaman}', [PengembalianController::class, 'create'])
+        ->name('pengembalian.create');
+
+    Route::post('/pengembalian/{idPeminjaman}', [PengembalianController::class, 'store'])
+        ->name('pengembalian.store');
+
+});
 
 Route::get('/admin/profil', [\App\Http\Controllers\Admin\ProfilController::class, 'edit'])->middleware('auth:admin')->name('admin.profil.edit');
 

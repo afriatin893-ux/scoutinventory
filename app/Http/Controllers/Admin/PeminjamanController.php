@@ -3,90 +3,99 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
 use App\Models\Peminjaman;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class PeminjamanController extends Controller
 {
-    public function __construct()
+    /**
+     * Daftar pengajuan yang masih menunggu verifikasi.
+     */
+    public function pending(): View
     {
-        $this->middleware('auth:admin');
+        $peminjamans = Peminjaman::with('peminjam', 'detailPeminjamans.barang')
+            ->where('status', 'Diajukan')
+            ->orderBy('tanggal_pinjam')
+            ->paginate(10);
+
+        return view('admin.peminjaman.pending', compact('peminjamans'));
     }
 
-    public function index(Request $request)
+    /**
+     * Riwayat semua peminjaman (semua status).
+     */
+    public function index(Request $request): View
     {
-        $query = Peminjaman::with(['peminjam', 'detailPeminjamans.barang']);
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
+        $peminjamans = Peminjaman::with('peminjam', 'detailPeminjamans.barang')
+            ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->withQueryString();
 
-        $peminjamans = $query->latest('tanggal_pinjam')->get();
         return view('admin.peminjaman.index', compact('peminjamans'));
     }
 
-    public function show(int $id)
+    public function show(Peminjaman $peminjaman): View
     {
-        $peminjaman = Peminjaman::with(['peminjam', 'admin', 'detailPeminjamans.barang', 'pengembalians'])->findOrFail($id);
+        $peminjaman->load('peminjam', 'admin', 'detailPeminjamans.barang', 'pengembalians');
+
         return view('admin.peminjaman.show', compact('peminjaman'));
     }
 
-    public function update(Request $request,int $id)
+    /**
+     * Setujui atau tolak pengajuan peminjaman.
+     */
+    public function verifikasi(Request $request, Peminjaman $peminjaman): RedirectResponse
     {
-        $peminjaman = Peminjaman::with('detailPeminjamans.barang')->findOrFail($id);
-        $validator = Validator::make($request->all(), [
-            'action' => ['required', 'in:verifikasi,serahkan'],
-            'keputusan' => ['required_if:action,verifikasi', 'in:disetujui,ditolak'],
-            'catatan_admin' => ['nullable', 'string'],
+        abort_unless($peminjaman->status === 'Diajukan', 400, 'Pengajuan ini sudah diproses sebelumnya.');
+
+        $validated = $request->validate([
+            'keputusan' => ['required', 'in:setuju,tolak'],
+            'catatan_admin' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();}
-        if ($request->action === 'verifikasi') {
-            return $this->prosesVerifikasi($request, $peminjaman);}
+        $admin = Auth::guard('admin')->user();
 
-        return $this->prosesSerahTerima($peminjaman);
-    }
+        if ($validated['keputusan'] === 'tolak') {
+            $peminjaman->update([
+                'id_admin' => $admin->id_admin,
+                'status' => 'Ditolak',
+                'catatan_admin' => $validated['catatan_admin'],
+            ]);
 
-    private function prosesVerifikasi(Request $request, Peminjaman $peminjaman)
-    {
-        if ($peminjaman->status !== 'diajukan') {
-            return back()->with('error', 'Pengajuan ini sudah diproses sebelumnya.');
+            return redirect()
+                ->route('admin.peminjaman.pending')
+                ->with('status', 'Pengajuan peminjaman ditolak.');
         }
-        if ($request->keputusan === 'disetujui') {
-            foreach ($peminjaman->detailPeminjamans as $detail) {
-                if ($detail->jumlah > $detail->barang->stok) {
-                    return back()->with('error', "Stok {$detail->barang->nama_barang} tidak mencukupi untuk disetujui.");
-                }
+
+        // Validasi stok masih cukup untuk semua item sebelum disetujui.
+        foreach ($peminjaman->detailPeminjamans as $detail) {
+            if ($detail->jumlah > $detail->barang->stok) {
+                return back()->withErrors([
+                    'keputusan' => 'Stok "'.$detail->barang->nama_barang.'" tidak lagi mencukupi ('.$detail->barang->stok.' tersisa).',
+                ]);
             }
         }
 
-        $peminjaman->update([
-            'status' => $request->keputusan,
-            'catatan_admin' => $request->catatan_admin,
-            'id_admin' => Auth::guard('admin')->id(),
-        ]);
-        return back()->with('success', 'Pengajuan berhasil ' . $request->keputusan . '.');
-    }
-
-    private function prosesSerahTerima(Peminjaman $peminjaman)
-    {
-        if ($peminjaman->status !== 'disetujui') {
-            return back()->with('error', 'Peminjaman harus berstatus disetujui sebelum diserahkan.');}
-        DB::transaction(function () use ($peminjaman) {
+        DB::transaction(function () use ($peminjaman, $admin, $validated) {
             foreach ($peminjaman->detailPeminjamans as $detail) {
-                if ($detail->jumlah > $detail->barang->stok) {
-                    throw new \RuntimeException("Stok {$detail->barang->nama_barang} tidak mencukupi.");
-                }
-
                 $detail->barang->decrement('stok', $detail->jumlah);
             }
 
-            $peminjaman->update(['status' => 'dipinjam']);
+            $peminjaman->update([
+                'id_admin' => $admin->id_admin,
+                'status' => 'Disetujui',
+                'catatan_admin' => $validated['catatan_admin'],
+            ]);
         });
 
-        return back()->with('success', 'Barang berhasil ditandai sebagai dipinjam.');
+        return redirect()
+            ->route('admin.peminjaman.pending')
+            ->with('status', 'Pengajuan peminjaman disetujui, stok telah dikurangi.');
     }
 }

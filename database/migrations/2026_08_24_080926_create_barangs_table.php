@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('id_kategori')->constrained('categories', 'id_kategori');
             $table->string('kode_barang', 50);
             $table->string('nama_barang', 100);
+            $table->string('foto')->nullable();
             $table->integer('stok');
             $table->string('kondisi', 50);
             $table->string('lokasi', 100);
