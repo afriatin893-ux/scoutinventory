@@ -13,7 +13,7 @@ class KategoriController extends Controller
      */
     public function index(): View
     {
-        $kategoris = Kategori::withCount('barangs')
+        $categories = Kategori::withCount('barangs')
             ->orderBy('nama_kategori')
             ->paginate(10);
 

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +17,7 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
+
 <body>
     <div class="app-shell">
         <header class="app-topbar">
@@ -23,15 +25,16 @@
 
             <div class="dropdown">
                 <a href="#" class="app-topbar-user dropdown-toggle" id="adminMenu" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false">
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     {{ Auth::guard('admin')->user()->nama ?? __('Admin') }}
                     <span class="status-dot"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminMenu">
-                    <li><a class="dropdown-item" href="{{ route('admin.profil.edit') }}">{{ __('Profil Saya') }}</a></li>
+                    <li><a class="dropdown-item" href="{{ route('admin.profil.edit') }}">{{ __('Profil Saya') }}</a>
+                    </li>
                     <li>
                         <a class="dropdown-item" href="{{ route('logout') }}"
-                           onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
+                            onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
                         <form id="admin-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -46,27 +49,23 @@
             <aside class="app-sidebar">
                 <nav>
                     <a href="{{ route('admin.dashboard') }}"
-                       class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         {{ __('Dashboard') }}
                     </a>
                     <a href="{{ route('admin.kategori.index') }}"
-                       class="sidebar-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
+                        class="sidebar-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
                         {{ __('Kelola Kategori Barang') }}
                     </a>
-                    <a href="#" class="sidebar-link disabled" onclick="return false;">
+                    <a href="{{ route('admin.barang.index') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.barang.*') ? 'active' : '' }}">
                         {{ __('Kelola Data Barang') }}
                     </a>
-                    <a href="#" class="sidebar-link disabled" onclick="return false;">
+                    <a href="{{ route('admin.peminjaman.pending') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.peminjaman.pending') ? 'active' : '' }}">
                         {{ __('Verifikasi Pengajuan') }}
                     </a>
-                    <a href="#" class="sidebar-link disabled" onclick="return false;">
-                        {{ __('Catat Pengembalian') }}
-                    </a>
-                    <a href="#" class="sidebar-link disabled" onclick="return false;">
-                        {{ __('Riwayat Peminjaman') }}
-                    </a>
                     <a href="{{ route('admin.profil.edit') }}"
-                       class="sidebar-link {{ request()->routeIs('admin.profil.*') ? 'active' : '' }}">
+                        class="sidebar-link {{ request()->routeIs('admin.profil.*') ? 'active' : '' }}">
                         {{ __('Profil Admin') }}
                     </a>
                 </nav>
@@ -99,4 +98,5 @@
         </div>
     </div>
 </body>
+
 </html>

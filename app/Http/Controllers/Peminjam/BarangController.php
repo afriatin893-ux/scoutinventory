@@ -18,8 +18,8 @@ class BarangController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        $kategoris = Kategori::orderBy('nama_kategori')->get();
+        $categories = Kategori::orderBy('nama_kategori')->get();
 
-        return view('peminjam.barang.index', compact('barangs', 'kategoris'));
+        return view('peminjam.barang.index', compact('barangs', 'categories'));
     }
 }

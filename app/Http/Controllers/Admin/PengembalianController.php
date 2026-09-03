@@ -21,11 +21,12 @@ class PengembalianController extends Controller
     {
         $peminjaman = Peminjaman::with('detailPeminjamans.barang')->findOrFail($idPeminjaman);
         if ($peminjaman->status !== 'dipinjam') {
-            return back()->with('error', 'Peminjaman ini belum berstatus dipinjam.');}
+            return back()->with('error', 'Peminjaman ini belum berstatus dipinjam.');
+        }
         return view('admin.pengembalian.create', compact('peminjaman'));
     }
 
-    public function store(Request $request,int $idPeminjaman)
+    public function store(Request $request, int $idPeminjaman)
     {
         $peminjaman = Peminjaman::with('detailPeminjamans.barang')->findOrFail($idPeminjaman);
         if ($peminjaman->status !== 'dipinjam') {
@@ -66,7 +67,7 @@ class PengembalianController extends Controller
         });
 
         return redirect()
-            ->route('admin.peminjaman.index', ['status' => 'dikembalikan'])
-            ->with('success', 'Pengembalian berhasil dicatat.');
+            ->route('admin.peminjaman.show', $peminjaman->id_peminjaman)
+            ->with('success', 'Pengembalian berhasil dicatat, stok telah diperbarui.');
     }
 }

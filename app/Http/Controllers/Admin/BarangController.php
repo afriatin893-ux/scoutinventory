@@ -24,7 +24,7 @@ class BarangController extends Controller
 
     public function create(): View
     {
-        $kategoris = Kategori::orderBy('nama_kategori')->get();
+        $categories = Kategori::orderBy('nama_kategori')->get();
 
         return view('admin.barang.create', compact('categories'));
     }
@@ -46,7 +46,7 @@ class BarangController extends Controller
 
     public function edit(Barang $barang): View
     {
-        $kategoris = Kategori::orderBy('nama_kategori')->get();
+        $categories = Kategori::orderBy('nama_kategori')->get();
 
         return view('admin.barang.edit', compact('barang', 'categories'));
     }
@@ -91,7 +91,7 @@ class BarangController extends Controller
     private function validated(Request $request, ?Barang $barang = null): array
     {
         $uniqueKode = $barang
-            ? 'unique:barangs,kode_barang,'.$barang->id_barang.',id_barang'
+            ? 'unique:barangs,kode_barang,' . $barang->id_barang . ',id_barang'
             : 'unique:barangs,kode_barang';
 
         return $request->validate([
