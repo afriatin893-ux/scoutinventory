@@ -22,6 +22,17 @@ class PeminjamanController extends Controller
         return view('admin.peminjaman.pending', compact('peminjamans'));
     }
 
+    public function index(Request $request): View
+    {
+        $peminjamans = Peminjaman::with('peminjam', 'detailPeminjamans.barang')
+            ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.peminjaman.index', compact('peminjamans'));
+    }
+
     public function show(Peminjaman $peminjaman): View
     {
         $peminjaman->load('peminjam', 'admin', 'detailPeminjamans.barang', 'pengembalians');
@@ -55,7 +66,7 @@ class PeminjamanController extends Controller
         foreach ($peminjaman->detailPeminjamans as $detail) {
             if ($detail->jumlah > $detail->barang->stok) {
                 return back()->withErrors([
-                    'keputusan' => 'Stok "' . $detail->barang->nama_barang . '" tidak lagi mencukupi (' . $detail->barang->stok . ' tersisa).',
+                    'keputusan' => 'Stok "'.$detail->barang->nama_barang.'" tidak lagi mencukupi ('.$detail->barang->stok.' tersisa).',
                 ]);
             }
         }

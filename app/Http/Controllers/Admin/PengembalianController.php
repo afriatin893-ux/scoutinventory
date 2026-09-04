@@ -67,7 +67,7 @@ class PengembalianController extends Controller
         });
 
         return redirect()
-            ->route('admin.peminjaman.show', $peminjaman->id_peminjaman)
+            ->route('admin.peminjaman.index', ['status' => 'dikembalikan'])
             ->with('success', 'Pengembalian berhasil dicatat, stok telah diperbarui.');
     }
 }

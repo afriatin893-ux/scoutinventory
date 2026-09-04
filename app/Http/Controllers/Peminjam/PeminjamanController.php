@@ -18,10 +18,8 @@ class PeminjamanController extends Controller
      */
     public function index(): View
     {
-        $peminjam = Auth::guard('peminjam')->user();
-
         $peminjamans = Peminjaman::with('detailPeminjamans.barang')
-            ->where('id_peminjam', $peminjam->id_peminjam)
+            ->where('id_peminjam', Auth::guard('peminjam')->id())
             ->orderByDesc('created_at')
             ->paginate(10);
 
@@ -73,7 +71,7 @@ class PeminjamanController extends Controller
             if (! $barang || $jumlahDiminta > $barang->stok) {
                 return back()
                     ->withInput()
-                    ->withErrors(['id_barang' => 'Jumlah yang diajukan untuk "'.($barang->nama_barang ?? $idBarang).'" melebihi stok tersedia ('.($barang->stok ?? 0).').']);
+                    ->withErrors(['id_barang' => 'Jumlah yang diajukan untuk "' . ($barang->nama_barang ?? $idBarang) . '" melebihi stok tersedia (' . ($barang->stok ?? 0) . ').']);
             }
         }
 

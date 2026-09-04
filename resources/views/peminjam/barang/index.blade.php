@@ -28,7 +28,7 @@
         <table class="table table-bordered align-middle bg-white">
             <thead>
                 <tr>
-                    <th style="width: 50px;">#</th>
+                    <th style="width: 50px;">No</th>
                     <th style="width: 60px;">{{ __('Foto') }}</th>
                     <th>{{ __('Nama Barang') }}</th>
                     <th>{{ __('Kategori') }}</th>

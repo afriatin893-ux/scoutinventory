@@ -56,6 +56,7 @@ Route::middleware('auth:peminjam')->prefix('peminjam')->name('peminjam.')->group
 
     Route::get('/peminjaman/create', [PeminjamPeminjamanController::class, 'create'])->name('peminjaman.create');
     Route::post('/peminjaman', [PeminjamPeminjamanController::class, 'store'])->name('peminjaman.store');
+    Route::get('/peminjaman', [PeminjamPeminjamanController::class, 'index'])->name('peminjaman.index');
     Route::get('/peminjaman/{peminjaman}', [PeminjamPeminjamanController::class, 'show'])->name('peminjaman.show');
 
     Route::get('/profil', [\App\Http\Controllers\Peminjam\ProfilController::class, 'edit'])->name('profil.edit');

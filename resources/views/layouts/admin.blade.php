@@ -64,6 +64,10 @@
                         class="sidebar-link {{ request()->routeIs('admin.peminjaman.pending') ? 'active' : '' }}">
                         {{ __('Verifikasi Pengajuan') }}
                     </a>
+                    <a href="{{ route('admin.peminjaman.index') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.peminjaman.index') || request()->routeIs('admin.peminjaman.show') ? 'active' : '' }}">
+                        {{ __('Riwayat Peminjaman') }}
+                    </a>
                     <a href="{{ route('admin.profil.edit') }}"
                         class="sidebar-link {{ request()->routeIs('admin.profil.*') ? 'active' : '' }}">
                         {{ __('Profil Admin') }}
@@ -79,10 +83,6 @@
                             <p class="page-subtitle">@yield('page-subtitle')</p>
                         @endif
                     </div>
-                @endif
-
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">{{ session('status') }}</div>
                 @endif
 
                 @if (session('success'))

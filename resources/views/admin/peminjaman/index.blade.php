@@ -30,7 +30,7 @@
             </tr>
         </thead>
         <tbody>
-            @forelse ($peminjamans as $p)
+            @forelse ($peminjamans as $peminjaman)
             <tr>
                 <td>{{ $loop->iteration + ($peminjamans->currentPage()-1) * $peminjamans->perPage() }}</td>
                 <td>{{ $p->peminjam->nama }}</td>

@@ -21,12 +21,20 @@ class DashboardController extends Controller
             ->where('tanggal_rencana_kembali', '<', now())
             ->count();
 
+        $grafikPeminjaman = Peminjaman::selectRaw('MONTH(tanggal_pinjam) as bulan, COUNT(*) as total')
+            ->whereYear('tanggal_pinjam', now()->year)
+            ->groupBy('bulan')
+            ->pluck('total', 'bulan');
+
+        $labelBulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+        $dataGrafik = [];
+        foreach (range(1, 12) as $bulan) {
+            $dataGrafik[] = $grafikPeminjaman[$bulan] ?? 0;
+        }
+
         return view('admin.dashboard', compact(
-            'admin',
-            'totalBarang',
-            'pengajuanMenunggu',
-            'sedangDipinjam',
-            'terlambatKembali'
+            'admin', 'totalBarang', 'pengajuanMenunggu', 'sedangDipinjam',
+            'terlambatKembali', 'labelBulan', 'dataGrafik'
         ));
     }
 }
