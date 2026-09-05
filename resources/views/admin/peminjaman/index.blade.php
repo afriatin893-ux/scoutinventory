@@ -33,12 +33,12 @@
             @forelse ($peminjamans as $peminjaman)
             <tr>
                 <td>{{ $loop->iteration + ($peminjamans->currentPage()-1) * $peminjamans->perPage() }}</td>
-                <td>{{ $p->peminjam->nama }}</td>
-                <td>{{ $p->detailPeminjamans->pluck('barang.nama_barang')->join(', ') }}</td>
-                <td>{{ \Carbon\Carbon::parse($p->tanggal_pinjam)->format('d M Y') }}</td>
-                <td>{{ \Carbon\Carbon::parse($p->tanggal_rencana_kembali)->format('d M Y') }}</td>
-                <td><span class="badge bg-secondary">{{ ucfirst($p->status) }}</span></td>
-                <td><a href="{{ route('admin.peminjaman.show', $p->id_peminjaman) }}" class="btn btn-sm btn-outline-secondary">Detail</a></td>
+                <td>{{ $peminjaman->peminjam->nama }}</td>
+                <td>{{ $peminjaman->detailPeminjamans->pluck('barang.nama_barang')->join(', ') }}</td>
+                <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('d M Y') }}</td>
+                <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_rencana_kembali)->format('d M Y') }}</td>
+                <td><span class="badge bg-secondary">{{ ucfirst($peminjaman->status) }}</span></td>
+                <td><a href="{{ route('admin.peminjaman.show', $peminjaman->id_peminjaman) }}" class="btn btn-sm btn-outline-secondary">Detail</a></td>
             </tr>
             @empty
             <tr><td colspan="7" class="text-center">Belum ada riwayat peminjaman.</td></tr>

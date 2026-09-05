@@ -17,10 +17,6 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
-    <div class="guest-topbar">
-        <span class="guest-topbar-title">{{ __('Sistem Peminjaman') }}</span>
-    </div>
-
     <div class="guest-content">
         @yield('content')
     </div>
