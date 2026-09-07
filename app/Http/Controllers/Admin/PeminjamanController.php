@@ -25,7 +25,7 @@ class PeminjamanController extends Controller
     public function index(Request $request): View
     {
         $peminjamans = Peminjaman::with('peminjam', 'detailPeminjamans.barang')
-            ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            ->when($request->status, fn($q) => $q->where('status', $request->status))
             ->orderByDesc('created_at')
             ->paginate(10)
             ->withQueryString();
@@ -66,7 +66,7 @@ class PeminjamanController extends Controller
         foreach ($peminjaman->detailPeminjamans as $detail) {
             if ($detail->jumlah > $detail->barang->stok) {
                 return back()->withErrors([
-                    'keputusan' => 'Stok "'.$detail->barang->nama_barang.'" tidak lagi mencukupi ('.$detail->barang->stok.' tersisa).',
+                    'keputusan' => 'Stok "' . $detail->barang->nama_barang . '" tidak lagi mencukupi (' . $detail->barang->stok . ' tersisa).',
                 ]);
             }
         }
@@ -86,5 +86,18 @@ class PeminjamanController extends Controller
         return redirect()
             ->route('admin.peminjaman.pending')
             ->with('status', 'Pengajuan disetujui, barang berstatus dipinjam dan stok telah dikurangi.');
+    }
+
+    public function destroy(Peminjaman $peminjaman): RedirectResponse
+    {
+        DB::transaction(function () use ($peminjaman) {
+            $peminjaman->pengembalians()->delete();
+            $peminjaman->detailPeminjamans()->delete();
+            $peminjaman->delete();
+        });
+
+        return redirect()
+            ->route('admin.peminjaman.index')
+            ->with('status', 'Data riwayat peminjaman berhasil dihapus.');
     }
 }

@@ -24,10 +24,15 @@
             <span class="app-topbar-title">{{ __('Sistem Peminjaman - Admin') }}</span>
 
             <div class="dropdown">
-                <a href="#" class="app-topbar-user dropdown-toggle" id="adminMenu" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="app-topbar-user dropdown-toggle d-flex align-items-center gap-2" id="adminMenu"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @if (Auth::guard('admin')->user()->foto)
+                        <img src="{{ asset('storage/' . Auth::guard('admin')->user()->foto) }}" alt="Foto admin"
+                            style="width:28px;height:28px;object-fit:cover;border-radius:50%;">
+                    @else
+                        <span class="status-dot"></span>
+                    @endif
                     {{ Auth::guard('admin')->user()->nama ?? __('Admin') }}
-                    <span class="status-dot"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminMenu">
                     <li><a class="dropdown-item" href="{{ route('admin.profil.edit') }}">{{ __('Profil Saya') }}</a>
@@ -63,6 +68,10 @@
                     <a href="{{ route('admin.peminjaman.pending') }}"
                         class="sidebar-link {{ request()->routeIs('admin.peminjaman.pending') ? 'active' : '' }}">
                         {{ __('Verifikasi Pengajuan') }}
+                    </a>
+                    <a href="{{ route('admin.pengembalian.index') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.pengembalian.*') ? 'active' : '' }}">
+                        {{ 'Catat Pengembalian' }}
                     </a>
                     <a href="{{ route('admin.peminjaman.index') }}"
                         class="sidebar-link {{ request()->routeIs('admin.peminjaman.index') || request()->routeIs('admin.peminjaman.show') ? 'active' : '' }}">

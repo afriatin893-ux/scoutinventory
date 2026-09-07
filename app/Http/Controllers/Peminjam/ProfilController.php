@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProfilController extends Controller
@@ -34,6 +35,8 @@ class ProfilController extends Controller
             'nama' => ['required', 'string', 'max:100'],
             'asal_organisasi' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:100', 'unique:peminjams,email,' . $peminjam->id_peminjam . ',id_peminjam'],
+            'no_telepon' => ['nullable', 'string', 'max:20'],
+            'foto' => ['nullable', 'image', 'max:2048'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
@@ -45,7 +48,15 @@ class ProfilController extends Controller
             'nama' => $request->nama,
             'asal_organisasi' => $request->asal_organisasi,
             'email' => $request->email,
+            'no_telepon' => $request->no_telepon,
         ];
+
+        if ($request->hasFile('foto')) {
+            if ($peminjam->foto) {
+                Storage::disk('public')->delete($peminjam->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('foto-peminjam', 'public');
+        }
 
         if ($request->filled('password')) {
             $data['password'] = Hash::make($request->password);

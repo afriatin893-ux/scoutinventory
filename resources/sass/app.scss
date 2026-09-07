@@ -1,4 +1,4 @@
-$primary:   #7a4a22;  
+$primary:   #7a4a22;
 $secondary: #4b5d3a;
 $card-border-color: rgba(122, 74, 34, 0.15);
 
@@ -116,7 +116,7 @@ body {
     position: relative;
     background-image:
         linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)),
-        url('/images/pram.jpg');
+        url('/images/a23.jpeg');
     background-size: cover;
     background-position: center;
 }
@@ -238,4 +238,8 @@ body {
     gap: 1rem;
     margin-bottom: 1rem;
     flex-wrap: wrap;
+}
+
+.border-dashed {
+    border-style: dashed !important;
 }

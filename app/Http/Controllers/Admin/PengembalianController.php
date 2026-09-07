@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Validator;
 
 class PengembalianController extends Controller
 {
+    public function index()
+    {
+        $peminjamans = Peminjaman::with('peminjam', 'detailPeminjamans.barang')
+            ->where('status', 'dipinjam')
+            ->orderBy('tanggal_rencana_kembali')
+            ->paginate(10);
+
+        return view('admin.pengembalian.index', compact('peminjamans'));
+    }
 
     public function __construct()
     {
@@ -32,9 +41,8 @@ class PengembalianController extends Controller
         if ($peminjaman->status !== 'dipinjam') {
             return back()->with('error', 'Peminjaman ini belum berstatus dipinjam.');
         }
+
         $validator = Validator::make($request->all(), [
-            'tanggal_pengembalian' => ['required', 'date'],
-            'jumlah_kembali' => ['required', 'integer', 'min:1'],
             'kondisi_barang' => ['required', 'string', 'max:50'],
             'foto_kondisi' => ['nullable', 'image', 'max:2048'],
             'catatan' => ['nullable', 'string'],
@@ -50,10 +58,12 @@ class PengembalianController extends Controller
                 $fotoPath = $request->file('foto_kondisi')->store('kondisi_barang', 'public');
             }
 
+            $jumlahKembali = $peminjaman->detailPeminjamans->sum('jumlah');
+
             Pengembalian::create([
                 'id_peminjaman' => $peminjaman->id_peminjaman,
-                'tanggal_pengembalian' => $request->tanggal_pengembalian,
-                'jumlah_kembali' => $request->jumlah_kembali,
+                'tanggal_pengembalian' => now()->toDateString(),
+                'jumlah_kembali' => $jumlahKembali,
                 'kondisi_barang' => $request->kondisi_barang,
                 'foto_kondisi' => $fotoPath,
                 'catatan' => $request->catatan,
@@ -68,6 +78,6 @@ class PengembalianController extends Controller
 
         return redirect()
             ->route('admin.peminjaman.index', ['status' => 'dikembalikan'])
-            ->with('success', 'Pengembalian berhasil dicatat, stok telah diperbarui.');
+            ->with('success', 'Pengembalian berhasil dicatat.');
     }
 }

@@ -24,10 +24,15 @@
             <span class="app-topbar-title">{{ __('Sistem Peminjaman - Peminjam') }}</span>
 
             <div class="dropdown">
-                <a href="#" class="app-topbar-user dropdown-toggle" id="peminjamMenu" role="button"
-                    data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="app-topbar-user dropdown-toggle d-flex align-items-center gap-2" id="peminjamMenu"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @if (Auth::guard('peminjam')->user()->foto)
+                        <img src="{{ asset('storage/' . Auth::guard('peminjam')->user()->foto) }}" alt="Foto peminjam"
+                            style="width:28px;height:28px;object-fit:cover;border-radius:50%;">
+                    @else
+                        <span class="status-dot"></span>
+                    @endif
                     {{ Auth::guard('peminjam')->user()->nama ?? __('Peminjam') }}
-                    <span class="status-dot"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="peminjamMenu">
                     <li><a class="dropdown-item" href="{{ route('peminjam.profil.edit') }}">{{ __('Profil Saya') }}</a>

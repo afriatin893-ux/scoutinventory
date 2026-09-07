@@ -9,7 +9,9 @@ use App\Http\Controllers\Peminjam\DashboardController as PeminjamDashboardContro
 use App\Http\Controllers\Peminjam\BarangController as PeminjamBarangController;
 use App\Http\Controllers\Peminjam\PeminjamanController as PeminjamPeminjamanController;
 
-Route::get('/', function () {return view('welcome');});
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::get('/login', [\App\Http\Controllers\Auth\LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login.proses');
@@ -37,7 +39,9 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
     Route::get('/peminjaman/{peminjaman}', [PeminjamanController::class, 'show'])->name('peminjaman.show');
     Route::put('/peminjaman/{peminjaman}/verifikasi', [PeminjamanController::class, 'verifikasi'])->name('peminjaman.verifikasi');
+    Route::delete('/peminjaman/{peminjaman}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
 
+    Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
     Route::get('/pengembalian/{idPeminjaman}', [PengembalianController::class, 'create'])->name('pengembalian.create');
     Route::post('/pengembalian/{idPeminjaman}', [PengembalianController::class, 'store'])->name('pengembalian.store');
 
