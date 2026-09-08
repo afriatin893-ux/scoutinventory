@@ -25,7 +25,7 @@ class PeminjamanController extends Controller
     public function index(Request $request): View
     {
         $peminjamans = Peminjaman::with('peminjam', 'detailPeminjamans.barang')
-            ->when($request->status, fn($q) => $q->where('status', $request->status))
+            ->when($request->status, fn ($q) => $q->where('status', $request->status))
             ->orderByDesc('created_at')
             ->paginate(10)
             ->withQueryString();
@@ -66,26 +66,45 @@ class PeminjamanController extends Controller
         foreach ($peminjaman->detailPeminjamans as $detail) {
             if ($detail->jumlah > $detail->barang->stok) {
                 return back()->withErrors([
-                    'keputusan' => 'Stok "' . $detail->barang->nama_barang . '" tidak lagi mencukupi (' . $detail->barang->stok . ' tersisa).',
+                    'keputusan' => 'Stok "'.$detail->barang->nama_barang.'" tidak lagi mencukupi ('.$detail->barang->stok.' tersisa).',
                 ]);
             }
         }
 
-        DB::transaction(function () use ($peminjaman, $admin, $validated) {
+        $peminjaman->update([
+            'id_admin' => $admin->id_admin,
+            'status' => 'Disetujui',
+            'catatan_admin' => $validated['catatan_admin'],
+        ]);
+
+        return redirect()
+            ->route('admin.peminjaman.pending')
+            ->with('status', 'Pengajuan disetujui, menunggu barang diambil oleh peminjam.');
+    }
+
+    public function konfirmasiPengambilan(Peminjaman $peminjaman): RedirectResponse
+    {
+        abort_unless($peminjaman->status === 'Disetujui', 400, 'Peminjaman ini belum berstatus Disetujui.');
+
+        foreach ($peminjaman->detailPeminjamans as $detail) {
+            if ($detail->jumlah > $detail->barang->stok) {
+                return back()->withErrors([
+                    'konfirmasi' => 'Stok "'.$detail->barang->nama_barang.'" tidak lagi mencukupi ('.$detail->barang->stok.' tersisa).',
+                ]);
+            }
+        }
+
+        DB::transaction(function () use ($peminjaman) {
             foreach ($peminjaman->detailPeminjamans as $detail) {
                 $detail->barang->decrement('stok', $detail->jumlah);
             }
 
-            $peminjaman->update([
-                'id_admin' => $admin->id_admin,
-                'status' => 'dipinjam',
-                'catatan_admin' => $validated['catatan_admin'],
-            ]);
+            $peminjaman->update(['status' => 'dipinjam']);
         });
 
         return redirect()
-            ->route('admin.peminjaman.pending')
-            ->with('status', 'Pengajuan disetujui, barang berstatus dipinjam dan stok telah dikurangi.');
+            ->route('admin.peminjaman.show', $peminjaman->id_peminjaman)
+            ->with('status', 'Pengambilan barang dikonfirmasi, stok telah dikurangi.');
     }
 
     public function destroy(Peminjaman $peminjaman): RedirectResponse

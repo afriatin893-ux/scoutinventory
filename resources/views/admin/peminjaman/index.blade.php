@@ -8,7 +8,7 @@
         <form method="GET" action="{{ route('admin.peminjaman.index') }}">
             <select name="status" class="form-select" onchange="this.form.submit()">
                 <option value="">{{ __('Semua Status') }}</option>
-                @foreach (['Diajukan', 'Ditolak', 'dipinjam', 'dikembalikan'] as $status)
+                @foreach (['Diajukan', 'Disetujui', 'dipinjam', 'Ditolak', 'dikembalikan'] as $status)
                     <option value="{{ $status }}" {{ request('status') === $status ? 'selected' : '' }}>
                         {{ ucfirst($status) }}
                     </option>

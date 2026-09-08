@@ -32,7 +32,7 @@
         <div class="card-body d-flex flex-wrap gap-2">
             <a href="{{ route('peminjam.barang.index') }}"class="btn btn-outline-primary">{{ __('Lihat Barang Tersedia') }}</a>
             <a href="{{ route('peminjam.peminjaman.create') }}"class="btn btn-outline-primary">{{ __('Ajukan Peminjaman') }}</a>
-            <a href="{{ route('peminjam.peminjaman.index') }}"class="btn btn-outline-primary">{{ __('Lihat Riwayat Peminjaman') }}</a>
+            <a href="{{ route('peminjam.status.index') }}" class="btn btn-outline-primary">{{ __('Lihat Status Peminjaman') }}</a>
         </div>
     </div>
 @endsection

@@ -77,6 +77,18 @@
                 </form>
             </div>
         </div>
+    @elseif ($peminjaman->status === 'Disetujui')
+        <div class="card">
+            <div class="card-header">Konfirmasi Pengambilan Barang</div>
+            <div class="card-body">
+                <p class="text-muted">Peminjaman ini sudah disetujui. Klik tombol di bawah setelah peminjam benar-benar mengambil barangnya.</p>
+                <form method="POST" action="{{ route('admin.peminjaman.konfirmasi', $peminjaman->id_peminjaman) }}">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-primary">Konfirmasi Pengambilan Barang</button>
+                </form>
+            </div>
+        </div>
     @elseif ($peminjaman->status === 'dipinjam')
         <a href="{{ route('admin.pengembalian.create', $peminjaman->id_peminjaman) }}" class="btn btn-primary">
             Catat Pengembalian

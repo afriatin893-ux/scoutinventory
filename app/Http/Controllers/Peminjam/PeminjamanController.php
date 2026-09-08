@@ -16,28 +16,48 @@ class PeminjamanController extends Controller
     /**
      * Riwayat & status peminjaman milik peminjam yang sedang login.
      */
-    public function index(): View
+    private const TABS = ['Diajukan', 'Disetujui', 'dipinjam', 'dikembalikan'];
+
+    public function status(Request $request): View
+    {
+        $tab = in_array($request->status, self::TABS) ? $request->status : 'Diajukan';
+
+        $peminjamans = Peminjaman::with('detailPeminjamans.barang')
+            ->where('id_peminjam', Auth::guard('peminjam')->id())
+            ->where('status', $tab)
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('peminjam.status.index', compact('peminjamans', 'tab'));
+    }
+
+    public function statusShow(Peminjaman $peminjaman): View
+    {
+        $this->authorizeOwner($peminjaman);
+        $peminjaman->load('detailPeminjamans.barang');
+
+        return view('peminjam.status.show', compact('peminjaman'));
+    }
+
+    public function riwayat(): View
     {
         $peminjamans = Peminjaman::with('detailPeminjamans.barang')
             ->where('id_peminjam', Auth::guard('peminjam')->id())
+            ->whereIn('status', ['dikembalikan', 'Ditolak'])
             ->orderByDesc('created_at')
             ->paginate(10);
 
-        return view('peminjam.peminjaman.index', compact('peminjamans'));
+        return view('peminjam.riwayat.index', compact('peminjamans'));
     }
 
-    /**
-     * Detail satu pengajuan peminjaman.
-     */
-    public function show(Peminjaman $peminjaman): View
+    public function riwayatShow(Peminjaman $peminjaman): View
     {
         $this->authorizeOwner($peminjaman);
+        $peminjaman->load('detailPeminjamans.barang', 'pengembalians');
 
-        $peminjaman->load('detailPeminjamans.barang', 'admin', 'pengembalians');
-
-        return view('peminjam.peminjaman.show', compact('peminjaman'));
+        return view('peminjam.riwayat.show', compact('peminjaman'));
     }
-
     /**
      * Form pengajuan peminjaman baru.
      */
@@ -95,7 +115,7 @@ class PeminjamanController extends Controller
         });
 
         return redirect()
-            ->route('peminjam.peminjaman.index')
+            ->route('peminjam.status.index')
             ->with('status', 'Pengajuan peminjaman berhasil dikirim, menunggu verifikasi admin.');
     }
 

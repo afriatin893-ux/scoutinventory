@@ -39,6 +39,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
     Route::get('/peminjaman/{peminjaman}', [PeminjamanController::class, 'show'])->name('peminjaman.show');
     Route::put('/peminjaman/{peminjaman}/verifikasi', [PeminjamanController::class, 'verifikasi'])->name('peminjaman.verifikasi');
+    Route::put('/peminjaman/{peminjaman}/konfirmasi-pengambilan', [PeminjamanController::class, 'konfirmasiPengambilan'])->name('peminjaman.konfirmasi');
     Route::delete('/peminjaman/{peminjaman}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
 
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
@@ -60,8 +61,11 @@ Route::middleware('auth:peminjam')->prefix('peminjam')->name('peminjam.')->group
 
     Route::get('/peminjaman/create', [PeminjamPeminjamanController::class, 'create'])->name('peminjaman.create');
     Route::post('/peminjaman', [PeminjamPeminjamanController::class, 'store'])->name('peminjaman.store');
-    Route::get('/peminjaman', [PeminjamPeminjamanController::class, 'index'])->name('peminjaman.index');
-    Route::get('/peminjaman/{peminjaman}', [PeminjamPeminjamanController::class, 'show'])->name('peminjaman.show');
+    Route::get('/status', [PeminjamPeminjamanController::class, 'status'])->name('status.index');
+    Route::get('/status/{peminjaman}', [PeminjamPeminjamanController::class, 'statusShow'])->name('status.show');
+
+    Route::get('/riwayat', [PeminjamPeminjamanController::class, 'riwayat'])->name('riwayat.index');
+    Route::get('/riwayat/{peminjaman}', [PeminjamPeminjamanController::class, 'riwayatShow'])->name('riwayat.show');
 
     Route::get('/profil', [\App\Http\Controllers\Peminjam\ProfilController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [\App\Http\Controllers\Peminjam\ProfilController::class, 'update'])->name('profil.update');

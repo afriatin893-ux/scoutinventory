@@ -24,8 +24,8 @@
             <span class="app-topbar-title">{{ __('Sistem Peminjaman - Peminjam') }}</span>
 
             <div class="dropdown">
-                <a href="#" class="app-topbar-user dropdown-toggle d-flex align-items-center gap-2" id="peminjamMenu"
-                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="app-topbar-user dropdown-toggle d-flex align-items-center gap-2"
+                    id="peminjamMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     @if (Auth::guard('peminjam')->user()->foto)
                         <img src="{{ asset('storage/' . Auth::guard('peminjam')->user()->foto) }}" alt="Foto peminjam"
                             style="width:28px;height:28px;object-fit:cover;border-radius:50%;">
@@ -65,9 +65,13 @@
                         class="sidebar-link {{ request()->routeIs('peminjam.peminjaman.create') ? 'active' : '' }}">
                         {{ __('Form Pengajuan') }}
                     </a>
-                    <a href="{{ route('peminjam.peminjaman.index') }}"
-                        class="sidebar-link {{ request()->routeIs('peminjam.peminjaman.index') || request()->routeIs('peminjam.peminjaman.show') ? 'active' : '' }}">
-                        {{ __('Status & Riwayat Peminjaman') }}
+                    <a href="{{ route('peminjam.status.index') }}"
+                        class="sidebar-link {{ request()->routeIs('peminjam.status.*') ? 'active' : '' }}">
+                        {{ __('Status Peminjaman') }}
+                    </a>
+                    <a href="{{ route('peminjam.riwayat.index') }}"
+                        class="sidebar-link {{ request()->routeIs('peminjam.riwayat.*') ? 'active' : '' }}">
+                        {{ __('Riwayat Peminjaman') }}
                     </a>
                     <a href="{{ route('peminjam.profil.edit') }}"
                         class="sidebar-link {{ request()->routeIs('peminjam.profil.*') ? 'active' : '' }}">

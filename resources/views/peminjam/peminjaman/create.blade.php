@@ -77,5 +77,11 @@
                 e.target.closest('.item-row').remove();
             }
         });
+        document.querySelector('form[action="{{ route('peminjam.peminjaman.store') }}"]').addEventListener('submit',
+            function(e) {
+                const btn = e.target.querySelector('button[type="submit"]');
+                btn.disabled = true;
+                btn.textContent = 'Mengirim...';
+            });
     </script>
 @endsection
