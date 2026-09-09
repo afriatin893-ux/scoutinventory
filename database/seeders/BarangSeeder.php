@@ -16,7 +16,6 @@ class BarangSeeder extends Seeder
         $barang = [
             [
                 'id_kategori' => 1,
-                'kode_barang' => 'BRG001',
                 'nama_barang' => 'Tenda Pleton',
                 'stok' => 10,
                 'kondisi' => 'Baik',
@@ -25,7 +24,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'id_kategori' => 1,
-                'kode_barang' => 'BRG002',
                 'nama_barang' => 'Tenda Pleton',
                 'stok' => 8,
                 'kondisi' => 'Baik',
@@ -34,7 +32,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'id_kategori' => 2,
-                'kode_barang' => 'BRG003',
                 'nama_barang' => 'Kompor Lapangan',
                 'stok' => 5,
                 'kondisi' => 'Baik',
@@ -43,7 +40,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'id_kategori' => 2,
-                'kode_barang' => 'BRG004',
                 'nama_barang' => 'Tongkat',
                 'stok' => 10,
                 'kondisi' => 'Baik',
@@ -52,7 +48,6 @@ class BarangSeeder extends Seeder
             ],
             [
                 'id_kategori' => 4,
-                'kode_barang' => 'BRG005',
                 'nama_barang' => 'Tali Pramuka',
                 'stok' => 20,
                 'kondisi' => 'Baik',

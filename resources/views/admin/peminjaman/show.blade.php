@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 
 @section('page-title', __('Detail Peminjaman'))
-@section('page-subtitle', __('Dashboard Admin/ Riwayat Peminjaman/ Detail'))
+@section('page-subtitle', request('from') === 'verifikasi' ? __('Dashboard Admin/ Verifikasi Pengajuan/ Detail') :
+    __('Dashboard Admin/ Riwayat Peminjaman/ Detail'))
 
 @section('content')
     <div class="card mb-4">
@@ -81,7 +82,8 @@
         <div class="card">
             <div class="card-header">Konfirmasi Pengambilan Barang</div>
             <div class="card-body">
-                <p class="text-muted">Peminjaman ini sudah disetujui. Klik tombol di bawah setelah peminjam benar-benar mengambil barangnya.</p>
+                <p class="text-muted">Peminjaman ini sudah disetujui. Klik tombol di bawah setelah peminjam benar-benar
+                    mengambil barangnya.</p>
                 <form method="POST" action="{{ route('admin.peminjaman.konfirmasi', $peminjaman->id_peminjaman) }}">
                     @csrf
                     @method('PUT')
@@ -114,7 +116,12 @@
     @endif
 
     <div class="mt-3">
-        <a href="{{ route('admin.peminjaman.index') }}"
-            class="btn btn-link ps-0">{{ __('Kembali ke Riwayat Peminjaman') }}</a>
+        @if (request('from') === 'verifikasi')
+            <a href="{{ route('admin.peminjaman.pending') }}"
+                class="btn btn-link ps-0">{{ __('Kembali ke Verifikasi Pengajuan') }}</a>
+        @else
+            <a href="{{ route('admin.peminjaman.index') }}"
+                class="btn btn-link ps-0">{{ __('Kembali ke Riwayat Peminjaman') }}</a>
+        @endif
     </div>
 @endsection

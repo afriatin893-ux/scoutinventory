@@ -66,16 +66,16 @@
                         {{ __('Kelola Data Barang') }}
                     </a>
                     <a href="{{ route('admin.peminjaman.pending') }}"
-                        class="sidebar-link {{ request()->routeIs('admin.peminjaman.pending') ? 'active' : '' }}">
-                        {{ __('Verifikasi Pengajuan') }}
+                        class="sidebar-link {{ request()->routeIs('admin.peminjaman.pending') || (request()->routeIs('admin.peminjaman.show') && request('from') === 'verifikasi') ? 'active' : '' }}">
+                        {{ 'Verifikasi Pengajuan' }}
                     </a>
                     <a href="{{ route('admin.pengembalian.index') }}"
                         class="sidebar-link {{ request()->routeIs('admin.pengembalian.*') ? 'active' : '' }}">
                         {{ 'Catat Pengembalian' }}
                     </a>
                     <a href="{{ route('admin.peminjaman.index') }}"
-                        class="sidebar-link {{ request()->routeIs('admin.peminjaman.index') || request()->routeIs('admin.peminjaman.show') ? 'active' : '' }}">
-                        {{ __('Riwayat Peminjaman') }}
+                        class="sidebar-link {{ request()->routeIs('admin.peminjaman.index') || (request()->routeIs('admin.peminjaman.show') && request('from') !== 'verifikasi') ? 'active' : '' }}">
+                        {{ 'Riwayat Peminjaman' }}
                     </a>
                     <a href="{{ route('admin.profil.edit') }}"
                         class="sidebar-link {{ request()->routeIs('admin.profil.*') ? 'active' : '' }}">

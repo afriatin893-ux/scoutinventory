@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('page-title', __('Kelola Kategori Barang'))
-@section('page-subtitle', __('Dashboard Admin/ Dashboard & Kelola Kategori Barang'))
+@section('page-subtitle', __('Dashboard Admin / Kelola Kategori Barang'))
 
 @section('content')
 <div class="toolbar-row">

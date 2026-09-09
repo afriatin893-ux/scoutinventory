@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('barangs', function (Blueprint $table) {
             $table->id('id_barang');
             $table->foreignId('id_kategori')->constrained('categories', 'id_kategori');
-            $table->string('kode_barang', 50);
             $table->string('nama_barang', 100);
             $table->string('foto')->nullable();
             $table->integer('stok');

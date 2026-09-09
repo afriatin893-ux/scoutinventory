@@ -23,7 +23,6 @@
                 <tr>
                     <th style="width: 50px;">No</th>
                     <th style="width: 60px;">{{ __('Foto') }}</th>
-                    <th>{{ __('Kode') }}</th>
                     <th>{{ __('Nama Barang') }}</th>
                     <th>{{ __('Kategori') }}</th>
                     <th>{{ __('Stok') }}</th>
@@ -44,7 +43,6 @@
                                 <span class="text-muted small">-</span>
                             @endif
                         </td>
-                        <td>{{ $barang->kode_barang }}</td>
                         <td>{{ $barang->nama_barang }}</td>
                         <td>{{ $barang->kategori->nama_kategori ?? '-' }}</td>
                         <td>{{ $barang->stok }}</td>

@@ -24,7 +24,7 @@
                 <td>{{ $p->detailPeminjamans->pluck('barang.nama_barang')->join(', ') }}</td>
                 <td>{{ \Carbon\Carbon::parse($p->tanggal_pinjam)->format('d M Y') }}</td>
                 <td>{{ \Carbon\Carbon::parse($p->tanggal_rencana_kembali)->format('d M Y') }}</td>
-                <td><a href="{{ route('admin.peminjaman.show', $p->id_peminjaman) }}" class="btn btn-sm btn-outline-primary">Detail</a></td>
+                <td><a href="{{ route('admin.peminjaman.show', ['peminjaman' => $p->id_peminjaman, 'from' => 'verifikasi']) }}" class="btn btn-sm btn-outline-primary">Detail</a></td>
             </tr>
             @empty
             <tr><td colspan="6" class="text-center">Tidak ada pengajuan menunggu.</td></tr>

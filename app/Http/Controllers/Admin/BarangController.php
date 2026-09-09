@@ -25,13 +25,15 @@ class BarangController extends Controller
     public function create(): View
     {
         $categories = Kategori::orderBy('nama_kategori')->get();
-
         return view('admin.barang.create', compact('categories'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validated($request);
+
+        // Generate kode_barang otomatis karena field ini sudah tidak ada di form
+        $validated['kode_barang'] = $this->generateKodeBarang();
 
         if ($request->hasFile('foto')) {
             $validated['foto'] = $request->file('foto')->store('foto-barang', 'public');
@@ -47,7 +49,6 @@ class BarangController extends Controller
     public function edit(Barang $barang): View
     {
         $categories = Kategori::orderBy('nama_kategori')->get();
-
         return view('admin.barang.edit', compact('barang', 'categories'));
     }
 
@@ -90,13 +91,8 @@ class BarangController extends Controller
 
     private function validated(Request $request, ?Barang $barang = null): array
     {
-        $uniqueKode = $barang
-            ? 'unique:barangs,kode_barang,' . $barang->id_barang . ',id_barang'
-            : 'unique:barangs,kode_barang';
-
         return $request->validate([
             'id_kategori' => ['required', 'exists:categories,id_kategori'],
-            'kode_barang' => ['required', 'string', 'max:50', $uniqueKode],
             'nama_barang' => ['required', 'string', 'max:100'],
             'foto' => ['nullable', 'image', 'max:2048'],
             'stok' => ['required', 'integer', 'min:0'],
@@ -104,5 +100,23 @@ class BarangController extends Controller
             'lokasi' => ['required', 'string', 'max:100'],
             'tanggal_pengadaan' => ['required', 'date'],
         ]);
+    }
+
+    /**
+     * Generate kode barang otomatis berformat BRG001, BRG002, dst.
+     */
+    private function generateKodeBarang(): string
+    {
+        $last = Barang::orderBy('id_barang', 'desc')->first();
+
+        if (!$last || !$last->kode_barang) {
+            return 'BRG001';
+        }
+
+        // Ambil angka dari kode terakhir, misal "BRG003" -> 3
+        $lastNumber = (int) substr($last->kode_barang, 3);
+        $nextNumber = $lastNumber + 1;
+
+        return 'BRG' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
     }
 }

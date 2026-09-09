@@ -27,15 +27,6 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="kode_barang" class="form-label">{{ __('Kode Barang') }}</label>
-                    <input id="kode_barang" type="text" class="form-control @error('kode_barang') is-invalid @enderror"
-                        name="kode_barang" value="{{ old('kode_barang') }}" placeholder="Contoh: BRG001" required>
-                    @error('kode_barang')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
                     <label for="nama_barang" class="form-label">{{ __('Nama Barang') }}</label>
                     <input id="nama_barang" type="text" class="form-control @error('nama_barang') is-invalid @enderror"
                         name="nama_barang" value="{{ old('nama_barang') }}" placeholder="Contoh: Tongkat Pramuka" required>
