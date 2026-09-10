@@ -31,10 +31,6 @@ class BarangController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validated($request);
-
-        // Generate kode_barang otomatis karena field ini sudah tidak ada di form
-        $validated['kode_barang'] = $this->generateKodeBarang();
-
         if ($request->hasFile('foto')) {
             $validated['foto'] = $request->file('foto')->store('foto-barang', 'public');
         }

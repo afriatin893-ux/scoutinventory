@@ -18,7 +18,6 @@ class PeminjamanController extends Controller
             ->where('status', 'Diajukan')
             ->orderBy('tanggal_pinjam')
             ->paginate(10);
-
         return view('admin.peminjaman.pending', compact('peminjamans'));
     }
 
@@ -29,40 +28,33 @@ class PeminjamanController extends Controller
             ->orderByDesc('created_at')
             ->paginate(10)
             ->withQueryString();
-
         return view('admin.peminjaman.index', compact('peminjamans'));
     }
 
     public function show(Peminjaman $peminjaman): View
     {
         $peminjaman->load('peminjam', 'admin', 'detailPeminjamans.barang', 'pengembalians');
-
         return view('admin.peminjaman.show', compact('peminjaman'));
     }
 
     public function verifikasi(Request $request, Peminjaman $peminjaman): RedirectResponse
     {
         abort_unless($peminjaman->status === 'Diajukan', 400, 'Pengajuan ini sudah diproses sebelumnya.');
-
         $validated = $request->validate([
             'keputusan' => ['required', 'in:setuju,tolak'],
             'catatan_admin' => ['nullable', 'string', 'max:1000'],
         ]);
-
         $admin = Auth::guard('admin')->user();
-
         if ($validated['keputusan'] === 'tolak') {
             $peminjaman->update([
                 'id_admin' => $admin->id_admin,
                 'status' => 'Ditolak',
                 'catatan_admin' => $validated['catatan_admin'],
             ]);
-
             return redirect()
                 ->route('admin.peminjaman.pending')
                 ->with('status', 'Pengajuan peminjaman ditolak.');
         }
-
         foreach ($peminjaman->detailPeminjamans as $detail) {
             if ($detail->jumlah > $detail->barang->stok) {
                 return back()->withErrors([
@@ -85,7 +77,6 @@ class PeminjamanController extends Controller
     public function konfirmasiPengambilan(Peminjaman $peminjaman): RedirectResponse
     {
         abort_unless($peminjaman->status === 'Disetujui', 400, 'Peminjaman ini belum berstatus Disetujui.');
-
         foreach ($peminjaman->detailPeminjamans as $detail) {
             if ($detail->jumlah > $detail->barang->stok) {
                 return back()->withErrors([
@@ -98,7 +89,6 @@ class PeminjamanController extends Controller
             foreach ($peminjaman->detailPeminjamans as $detail) {
                 $detail->barang->decrement('stok', $detail->jumlah);
             }
-
             $peminjaman->update(['status' => 'dipinjam']);
         });
 
@@ -117,6 +107,6 @@ class PeminjamanController extends Controller
 
         return redirect()
             ->route('admin.peminjaman.index')
-            ->with('status', 'Data riwayat peminjaman berhasil dihapus.');
+            ->with('status', 'Data riwayat peminjaman berhasil dihapus');
     }
 }

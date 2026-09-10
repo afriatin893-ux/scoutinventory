@@ -27,7 +27,7 @@
                     <th>Tgl Pinjam</th>
                     <th>Tgl Rencana Kembali</th>
                     <th>Status</th>
-                    <th style="width:110px;">Aksi</th>
+                    <th style="width:160px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,11 +40,17 @@
                         <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_rencana_kembali)->format('d M Y') }}</td>
                         <td><span class="badge bg-secondary">{{ ucfirst($peminjaman->status) }}</span></td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                data-bs-target="#hapusRiwayatModal" data-peminjam="{{ $peminjaman->peminjam->nama }}"
-                                data-action="{{ route('admin.peminjaman.destroy', $peminjaman->id_peminjaman) }}">
-                                Hapus
-                            </button>
+                            <div class="d-flex gap-1">
+                                <a href="{{ route('admin.peminjaman.show', $peminjaman->id_peminjaman) }}"
+                                    class="btn btn-sm btn-outline-primary">
+                                    Detail
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                    data-bs-target="#hapusRiwayatModal" data-peminjam="{{ $peminjaman->peminjam->nama }}"
+                                    data-action="{{ route('admin.peminjaman.destroy', $peminjaman->id_peminjaman) }}">
+                                    Hapus
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 @empty

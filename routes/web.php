@@ -25,7 +25,6 @@ Route::get('/admin/dashboard', [DashboardController::class, 'index'])
     ->name('admin.dashboard');
 
 Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
-
     Route::get('/kategori', [\App\Http\Controllers\Admin\KategoriController::class, 'index'])->name('kategori.index');
     Route::get('/kategori/create', [\App\Http\Controllers\Admin\KategoriController::class, 'create'])->name('kategori.create');
     Route::post('/kategori', [\App\Http\Controllers\Admin\KategoriController::class, 'store'])->name('kategori.store');
