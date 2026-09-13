@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
+use App\Notifications\StatusPeminjamanBerubah;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,9 @@ class PeminjamanController extends Controller
                 'status' => 'Ditolak',
                 'catatan_admin' => $validated['catatan_admin'],
             ]);
+
+            $peminjaman->peminjam->notify(new StatusPeminjamanBerubah($peminjaman));
+
             return redirect()
                 ->route('admin.peminjaman.pending')
                 ->with('status', 'Pengajuan peminjaman ditolak.');
@@ -68,6 +72,8 @@ class PeminjamanController extends Controller
             'status' => 'Disetujui',
             'catatan_admin' => $validated['catatan_admin'],
         ]);
+
+        $peminjaman->peminjam->notify(new StatusPeminjamanBerubah($peminjaman));
 
         return redirect()
             ->route('admin.peminjaman.pending')
@@ -91,6 +97,8 @@ class PeminjamanController extends Controller
             }
             $peminjaman->update(['status' => 'dipinjam']);
         });
+
+        $peminjaman->peminjam->notify(new StatusPeminjamanBerubah($peminjaman));
 
         return redirect()
             ->route('admin.peminjaman.show', $peminjaman->id_peminjaman)

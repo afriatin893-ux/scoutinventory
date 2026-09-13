@@ -30,6 +30,9 @@
                 <dt class="col-sm-4">{{ __('Keperluan') }}</dt>
                 <dd class="col-sm-8">{{ $peminjaman->keperluan }}</dd>
 
+                <dt class="col-sm-4">{{ __('Penanggung Jawab') }}</dt>
+                <dd class="col-sm-8">{{ $peminjaman->penanggung_jawab ?? '-' }}</dd>
+
                 <dt class="col-sm-4">{{ __('Barang Diajukan') }}</dt>
                 <dd class="col-sm-8">
                     <ul class="mb-0">

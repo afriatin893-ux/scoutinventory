@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\Peminjaman;
+use App\Models\DetailPeminjaman;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -32,9 +33,16 @@ class DashboardController extends Controller
             $dataGrafik[] = $grafikPeminjaman[$bulan] ?? 0;
         }
 
+        $barangTerpopuler = DetailPeminjaman::selectRaw('id_barang, SUM(jumlah) as total_dipinjam')
+            ->groupBy('id_barang')
+            ->orderByDesc('total_dipinjam')
+            ->with('barang')
+            ->take(5)
+            ->get();
+
         return view('admin.dashboard', compact(
             'admin', 'totalBarang', 'pengajuanMenunggu', 'sedangDipinjam',
-            'terlambatKembali', 'labelBulan', 'dataGrafik'
+            'terlambatKembali', 'labelBulan', 'dataGrafik', 'barangTerpopuler'
         ));
     }
 }

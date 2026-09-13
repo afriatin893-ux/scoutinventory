@@ -18,6 +18,7 @@ return new class extends Migration
            $table->date('tanggal_pinjam');
            $table->date('tanggal_rencana_kembali');
            $table->text('keperluan');
+           $table->string('penanggung_jawab', 100);
            $table->string('status', 20);
            $table->text('catatan_admin')->nullable();
            $table->timestamps();

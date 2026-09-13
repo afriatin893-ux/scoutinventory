@@ -14,6 +14,7 @@ class Peminjaman extends Model
         'tanggal_pinjam',
         'tanggal_rencana_kembali',
         'keperluan',
+        'penanggung_jawab',
         'status',
         'catatan_admin',
     ];

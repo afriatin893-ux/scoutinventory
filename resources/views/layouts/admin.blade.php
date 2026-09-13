@@ -23,6 +23,27 @@
         <header class="app-topbar">
             <span class="app-topbar-title">{{ __('Sistem Peminjaman - Admin') }}</span>
 
+            @php
+                $unread = Auth::guard('admin')->user()->unreadNotifications;
+            @endphp
+            <div class="dropdown">
+                <a href="#" class="nav-link position-relative" data-bs-toggle="dropdown">
+                    🔔
+                    @if ($unread->count())
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                            {{ $unread->count() }}
+                        </span>
+                    @endif
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width:280px;">
+                    @forelse ($unread as $n)
+                        <li class="small border-bottom py-1">{{ $n->data['pesan'] }}</li>
+                    @empty
+                        <li class="small text-muted">{{ __('Tidak ada notifikasi baru.') }}</li>
+                    @endforelse
+                </ul>
+            </div>
+
             <div class="dropdown">
                 <a href="#" class="app-topbar-user dropdown-toggle d-flex align-items-center gap-2" id="adminMenu"
                     role="button" data-bs-toggle="dropdown" aria-expanded="false">

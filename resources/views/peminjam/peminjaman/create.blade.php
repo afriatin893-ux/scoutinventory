@@ -61,6 +61,11 @@
                     <textarea name="keperluan" class="form-control" rows="3"
                         placeholder="{{ __('Contoh: Untuk Kegiatan Perkemahan Sabtu Minggu') }}" required>{{ old('keperluan') }}</textarea>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Penanggung Jawab') }}</label>
+                    <input type="text" name="penanggung_jawab" class="form-control"
+                        value="{{ old('penanggung_jawab') }}" required>
+                </div>
 
                 <button type="submit" class="btn btn-primary">{{ __('Ajukan Peminjaman') }}</button>
             </form>

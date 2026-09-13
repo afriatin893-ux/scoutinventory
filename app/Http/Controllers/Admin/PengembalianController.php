@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
+use App\Notifications\StatusPeminjamanBerubah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -75,6 +76,8 @@ class PengembalianController extends Controller
 
             $peminjaman->update(['status' => 'dikembalikan']);
         });
+
+        $peminjaman->peminjam->notify(new StatusPeminjamanBerubah($peminjaman));
 
         return redirect()
             ->route('admin.peminjaman.index', ['status' => 'dikembalikan'])

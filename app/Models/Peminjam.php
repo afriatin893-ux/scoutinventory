@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Peminjam extends Authenticatable
 {
+    use Notifiable;
     protected $table = 'peminjams';
     protected $primaryKey = 'id_peminjam';
     protected $fillable = [

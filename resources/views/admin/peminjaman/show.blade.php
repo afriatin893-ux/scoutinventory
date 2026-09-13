@@ -29,6 +29,10 @@
                     <div class="text-muted small">Keperluan</div>
                     <div>{{ $peminjaman->keperluan }}</div>
                 </div>
+                <div class="col-12">
+                    <div class="text-muted small">Penanggung Jawab</div>
+                    <div>{{ $peminjaman->penanggung_jawab ?? '-' }}</div>
+                </div>
             </div>
         </div>
     </div>

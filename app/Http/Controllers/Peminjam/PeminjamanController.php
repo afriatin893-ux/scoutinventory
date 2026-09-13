@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Peminjam;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\Peminjaman;
+use App\Models\Admin;
+use App\Notifications\PengajuanBaruMasuk;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +79,7 @@ class PeminjamanController extends Controller
             'tanggal_pinjam' => ['required', 'date'],
             'tanggal_rencana_kembali' => ['required', 'date', 'after_or_equal:tanggal_pinjam'],
             'keperluan' => ['required', 'string', 'max:1000'],
+            'penanggung_jawab' => ['required', 'string', 'max:100'],
             'id_barang' => ['required', 'array', 'min:1'],
             'id_barang.*' => ['required', 'exists:barangs,id_barang', 'distinct'],
             'jumlah' => ['required', 'array', 'min:1'],
@@ -103,8 +106,10 @@ class PeminjamanController extends Controller
                 'tanggal_pinjam' => $validated['tanggal_pinjam'],
                 'tanggal_rencana_kembali' => $validated['tanggal_rencana_kembali'],
                 'keperluan' => $validated['keperluan'],
+                'penanggung_jawab' => $validated['penanggung_jawab'],
                 'status' => 'Diajukan',
             ]);
+        Admin::all()->each(fn($admin) => $admin->notify(new PengajuanBaruMasuk($peminjaman)));
 
             foreach ($validated['id_barang'] as $index => $idBarang) {
                 $peminjaman->detailPeminjamans()->create([
