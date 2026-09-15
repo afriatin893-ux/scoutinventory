@@ -1,91 +1,224 @@
 @extends('layouts.guest')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+<div class="auth-shell">
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+    <div class="auth-topbrand">
+        <div class="icon-chip">
+            🛡️
+        </div>
+        <span>Sistem Peminjaman Pramuka</span>
+    </div>
 
-                        <div class="row mb-3">
-                            <label for="nama" class="col-md-4 col-form-label text-md-end">{{ __('Nama') }}</label>
+    <div class="auth-card">
 
-                            <div class="col-md-6">
-                                <input id="nama" type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" required autocomplete="name" autofocus>
-
-                                @error('nama')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="asal_organisasi" class="col-md-4 col-form-label text-md-end">{{ __('Asal Organisasi') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="asal_organisasi" type="text" class="form-control @error('asal_organisasi') is-invalid @enderror" name="asal_organisasi" value="{{ old('asal_organisasi') }}" required autocomplete="organization">
-
-                                @error('asal_organisasi')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+        <div class="auth-badge-wrap">
+            <div class="auth-badge">
+                🛡️
             </div>
         </div>
+
+        <div style="text-align: center;">
+            <div class="auth-eyebrow">
+                Buat Akun
+            </div>
+
+            <h1 class="auth-heading">
+                Daftar sebagai Peminjam
+            </h1>
+
+            <p class="auth-subheading">
+                Buat akun untuk mengajukan peminjaman barang Pramuka.
+            </p>
+        </div>
+
+        @if ($errors->any())
+            <div class="alert-flash">
+                <div>
+                    <strong>Periksa kembali data yang kamu masukkan.</strong>
+                </div>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            {{-- Nama --}}
+            <div class="field-group">
+                <label for="nama" class="field-label">
+                    Nama
+                </label>
+
+                <div class="field-shell @error('nama') has-error @enderror">
+                    <div class="field-icon">
+                        👤
+                    </div>
+
+                    <input
+                        id="nama"
+                        type="text"
+                        name="nama"
+                        value="{{ old('nama') }}"
+                        placeholder="Masukkan nama lengkap"
+                        required
+                        autofocus
+                    >
+                </div>
+
+                @error('nama')
+                    <span class="field-error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Asal Organisasi --}}
+            <div class="field-group">
+                <label for="asal_organisasi" class="field-label">
+                    Asal Organisasi
+                </label>
+
+                <div class="field-shell @error('asal_organisasi') has-error @enderror">
+                    <div class="field-icon">
+                        🏢
+                    </div>
+
+                    <input
+                        id="asal_organisasi"
+                        type="text"
+                        name="asal_organisasi"
+                        value="{{ old('asal_organisasi') }}"
+                        placeholder="Contoh: OSIS"
+                        required
+                    >
+                </div>
+
+                @error('asal_organisasi')
+                    <span class="field-error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Email --}}
+            <div class="field-group">
+                <label for="email" class="field-label">
+                    Email
+                </label>
+
+                <div class="field-shell @error('email') has-error @enderror">
+                    <div class="field-icon">
+                        ✉️
+                    </div>
+
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        placeholder="Masukkan alamat email"
+                        required
+                    >
+                </div>
+
+                @error('email')
+                    <span class="field-error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Password --}}
+            <div class="field-group">
+                <label for="password" class="field-label">
+                    Password
+                </label>
+
+                <div class="field-shell @error('password') has-error @enderror">
+                    <div class="field-icon">
+                        🔒
+                    </div>
+
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        placeholder="Masukkan password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="field-toggle"
+                        onclick="togglePassword('password', this)"
+                    >
+                        Lihat
+                    </button>
+                </div>
+
+                @error('password')
+                    <span class="field-error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- Konfirmasi Password --}}
+            <div class="field-group">
+                <label for="password-confirm" class="field-label">
+                    Konfirmasi Password
+                </label>
+
+                <div class="field-shell">
+                    <div class="field-icon">
+                        🔒
+                    </div>
+
+                    <input
+                        id="password-confirm"
+                        type="password"
+                        name="password_confirmation"
+                        placeholder="Ulangi password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="field-toggle"
+                        onclick="togglePassword('password-confirm', this)"
+                    >
+                        Lihat
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-brown">
+                Daftar Akun →
+            </button>
+        </form>
+
+        <div class="auth-divider">
+            atau
+        </div>
+
+        <div class="auth-foot">
+            Sudah punya akun?
+            <a href="{{ route('login') }}" class="link-muted">
+                Masuk di sini
+            </a>
+        </div>
+
     </div>
+
+    <div class="auth-bottom-note">
+        © {{ date('Y') }} Sistem Peminjaman Pramuka
+    </div>
+
 </div>
+
+<script>
+    function togglePassword(id, button) {
+        const input = document.getElementById(id);
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            button.textContent = 'Sembunyikan';
+        } else {
+            input.type = 'password';
+            button.textContent = 'Lihat';
+        }
+    }
+</script>
 @endsection
