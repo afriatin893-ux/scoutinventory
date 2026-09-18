@@ -139,11 +139,20 @@
 
             <main class="app-content">
                 @hasSection('page-title')
-                    <div class="page-header">
-                        <h1>@yield('page-title')</h1>
-                        @hasSection('page-subtitle')
-                            <p class="page-subtitle">@yield('page-subtitle')</p>
-                        @endif
+                    <div class="page-header-row">
+                        <span class="page-header-icon">
+                            @hasSection('page-icon')
+                                @yield('page-icon')
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+                            @endif
+                        </span>
+                        <div>
+                            <h1>@yield('page-title')</h1>
+                            @hasSection('page-subtitle')
+                                <p class="page-subtitle">@yield('page-subtitle')</p>
+                            @endif
+                        </div>
                     </div>
                 @endif
 
