@@ -124,6 +124,32 @@ class PeminjamanController extends Controller
             ->with('status', 'Pengajuan peminjaman berhasil dikirim, menunggu verifikasi admin.');
     }
 
+    /**
+     * Tandai notifikasi sudah dibaca lalu buka halaman detail peminjamannya.
+     */
+    public function bukaNotifikasi(string $id): RedirectResponse
+    {
+        $notif = Auth::guard('peminjam')->user()
+            ->notifications()
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $notif->markAsRead();
+
+        $peminjaman = Peminjaman::find($notif->data['peminjaman_id'] ?? null);
+
+        if (! $peminjaman) {
+            return redirect()->route('peminjam.dashboard');
+        }
+
+        // Peminjaman yang sudah selesai/ditolak ada di halaman riwayat.
+        $route = in_array($peminjaman->status, ['dikembalikan', 'Ditolak'])
+            ? 'peminjam.riwayat.show'
+            : 'peminjam.status.show';
+
+        return redirect()->route($route, $peminjaman);
+    }
+
     private function authorizeOwner(Peminjaman $peminjaman): void
     {
         abort_unless(

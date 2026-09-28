@@ -35,20 +35,17 @@ class PengembalianController extends Controller
         }
         return view('admin.pengembalian.create', compact('peminjaman'));
     }
-
     public function store(Request $request, int $idPeminjaman)
     {
         $peminjaman = Peminjaman::with('detailPeminjamans.barang')->findOrFail($idPeminjaman);
         if ($peminjaman->status !== 'dipinjam') {
             return back()->with('error', 'Peminjaman ini belum berstatus dipinjam.');
         }
-
         $validator = Validator::make($request->all(), [
             'kondisi_barang' => ['required', 'string', 'max:50'],
             'foto_kondisi' => ['nullable', 'image', 'max:2048'],
             'catatan' => ['nullable', 'string'],
         ]);
-
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
@@ -58,9 +55,7 @@ class PengembalianController extends Controller
             if ($request->hasFile('foto_kondisi')) {
                 $fotoPath = $request->file('foto_kondisi')->store('kondisi_barang', 'public');
             }
-
             $jumlahKembali = $peminjaman->detailPeminjamans->sum('jumlah');
-
             Pengembalian::create([
                 'id_peminjaman' => $peminjaman->id_peminjaman,
                 'tanggal_pengembalian' => now()->toDateString(),
@@ -69,16 +64,13 @@ class PengembalianController extends Controller
                 'foto_kondisi' => $fotoPath,
                 'catatan' => $request->catatan,
             ]);
-
             foreach ($peminjaman->detailPeminjamans as $detail) {
                 $detail->barang->increment('stok', $detail->jumlah);
             }
-
             $peminjaman->update(['status' => 'dikembalikan']);
         });
 
         $peminjaman->peminjam->notify(new StatusPeminjamanBerubah($peminjaman));
-
         return redirect()
             ->route('admin.peminjaman.index', ['status' => 'dikembalikan'])
             ->with('success', 'Pengembalian berhasil dicatat.');

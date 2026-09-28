@@ -66,6 +66,8 @@ Route::middleware('auth:peminjam')->prefix('peminjam')->name('peminjam.')->group
     Route::get('/riwayat', [PeminjamPeminjamanController::class, 'riwayat'])->name('riwayat.index');
     Route::get('/riwayat/{peminjaman}', [PeminjamPeminjamanController::class, 'riwayatShow'])->name('riwayat.show');
 
+    Route::get('/notifikasi/{id}', [PeminjamPeminjamanController::class, 'bukaNotifikasi'])->name('notifikasi.buka');
+
     Route::get('/profil', [\App\Http\Controllers\Peminjam\ProfilController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [\App\Http\Controllers\Peminjam\ProfilController::class, 'update'])->name('profil.update');
 });
