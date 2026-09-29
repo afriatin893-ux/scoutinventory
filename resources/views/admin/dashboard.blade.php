@@ -4,47 +4,90 @@
 @section('page-subtitle', __('Dashboard Admin / Grafik & Ringkasan Peminjaman'))
 
 @section('content')
-    <div class="stat-grid">
-        <div class="stat-card">
-            <div class="stat-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+    <h1 class="dash-welcome">{{ __('Selamat Datang, :nama!', ['nama' => $admin->nama ?? 'Admin']) }} 👋</h1>
+
+    <div class="dash-stats dash-stats-4">
+        <div class="dash-stat">
+            <span class="dash-stat-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>
                 </svg>
+            </span>
+            <div>
+                <div class="dash-stat-label">{{ __('Total Barang') }}</div>
+                <div class="dash-stat-value">{{ $totalBarang }}</div>
             </div>
-            <div class="stat-label">{{ __('Total Barang') }}</div>
-            <div class="stat-value">{{ $totalBarang }}</div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <div class="dash-stat dash-stat-gold">
+            <span class="dash-stat-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
                     <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
                 </svg>
+            </span>
+            <div>
+                <div class="dash-stat-label">{{ __('Pengajuan Menunggu') }}</div>
+                <div class="dash-stat-value">{{ $pengajuanMenunggu }}</div>
             </div>
-            <div class="stat-label">{{ __('Pengajuan Menunggu') }}</div>
-            <div class="stat-value">{{ $pengajuanMenunggu }}</div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <div class="dash-stat dash-stat-blue">
+            <span class="dash-stat-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>
                 </svg>
+            </span>
+            <div>
+                <div class="dash-stat-label">{{ __('Sedang Dipinjam') }}</div>
+                <div class="dash-stat-value">{{ $sedangDipinjam }}</div>
             </div>
-            <div class="stat-label">{{ __('Sedang Dipinjam') }}</div>
-            <div class="stat-value">{{ $sedangDipinjam }}</div>
         </div>
 
-        <div class="stat-card danger">
-            <div class="stat-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
-                    <path d="M12 9v4"/><path d="M12 17h.01"/>
+        <div class="dash-stat dash-stat-danger">
+            <span class="dash-stat-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>
                 </svg>
+            </span>
+            <div>
+                <div class="dash-stat-label">{{ __('Terlambat Kembali') }}</div>
+                <div class="dash-stat-value">{{ $terlambatKembali }}</div>
             </div>
-            <div class="stat-label">{{ __('Terlambat Kembali') }}</div>
-            <div class="stat-value">{{ $terlambatKembali }}</div>
         </div>
+    </div>
+
+    <h2 class="dash-section-title">{{ __('Menu Cepat') }}</h2>
+
+    <div class="dash-menu">
+        <a href="{{ route('admin.peminjaman.pending') }}" class="dash-menu-card">
+            <span class="dash-menu-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+            </span>
+            <div class="dash-menu-title">{{ __('Verifikasi Pengajuan') }}</div>
+            <div class="dash-menu-desc">{{ __('Tinjau dan setujui pengajuan peminjaman yang masuk.') }}</div>
+        </a>
+
+        <a href="{{ route('admin.barang.create') }}" class="dash-menu-card">
+            <span class="dash-menu-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14M5 12h14"/>
+                </svg>
+            </span>
+            <div class="dash-menu-title">{{ __('Tambah Barang') }}</div>
+            <div class="dash-menu-desc">{{ __('Daftarkan barang inventaris baru ke sistem.') }}</div>
+        </a>
+
+        <a href="{{ route('admin.peminjaman.index') }}" class="dash-menu-card">
+            <span class="dash-menu-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>
+                </svg>
+            </span>
+            <div class="dash-menu-title">{{ __('Riwayat Peminjaman') }}</div>
+            <div class="dash-menu-desc">{{ __('Lihat seluruh riwayat peminjaman barang.') }}</div>
+        </a>
     </div>
 
     <div class="panel">

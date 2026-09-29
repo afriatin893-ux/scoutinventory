@@ -35,8 +35,15 @@
         </div>
 
         <div class="hero-content">
+            <div class="hero-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="#fff" stroke-width="1.6">
+                    <path d="M12 2 3 6v6c0 5 4 8.5 9 10 5-1.5 9-5 9-10V6l-9-4Z"/>
+                    <path d="M9 12.5 11 14.5 15.5 9.5"/>
+                </svg>
+            </div>
+
             <span class="hero-eyebrow">GIAT PRASEDA A23</span>
-            <h1 class="hero-title">Kelola Peminjaman Barang Pramuka</h1>
+            <h1 class="hero-title">Kelola Peminjaman Barang <span>Pramuka</span></h1>
             <p class="hero-sub">
                 Ajukan peminjaman, kelola inventaris, dan pantau pengembalian barang dalam satu sistem yang terorganisir.</p>
 
@@ -53,20 +60,35 @@
                     <a href="{{ route('register') }}" class="btn-hero-secondary">Daftar akun baru</a>
                 @endif
             </div>
+        </div>
 
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <b>Praktis</b>
-                    <span>Kelola barang dengan mudah</span>
-                </div>
-                <div class="hero-stat">
-                    <b>Teratur</b>
-                    <span>Data tersusun rapi</span>
-                </div>
-                <div class="hero-stat">
-                    <b>Terpantau</b>
-                    <span>Peminjaman tercatat</span>
-                </div>
+        <div class="hero-features">
+            <div class="hero-feature">
+                <span class="hero-feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>
+                    </svg>
+                </span>
+                <b>Praktis</b>
+                <span>Kelola barang dengan mudah</span>
+            </div>
+            <div class="hero-feature">
+                <span class="hero-feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/>
+                    </svg>
+                </span>
+                <b>Teratur</b>
+                <span>Data tersusun rapi</span>
+            </div>
+            <div class="hero-feature">
+                <span class="hero-feature-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+                    </svg>
+                </span>
+                <b>Terpantau</b>
+                <span>Peminjaman tercatat</span>
             </div>
         </div>
     </div>

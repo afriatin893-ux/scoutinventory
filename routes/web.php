@@ -44,6 +44,8 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
     Route::get('/pengembalian/{idPeminjaman}', [PengembalianController::class, 'create'])->name('pengembalian.create');
     Route::post('/pengembalian/{idPeminjaman}', [PengembalianController::class, 'store'])->name('pengembalian.store');
+    
+    Route::get('/notifikasi/{id}', [PeminjamanController::class, 'bukaNotifikasi'])->name('notifikasi.buka');
 
     Route::get('/profil', [\App\Http\Controllers\Admin\ProfilController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [\App\Http\Controllers\Admin\ProfilController::class, 'update'])->name('profil.update');

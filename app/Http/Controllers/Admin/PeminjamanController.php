@@ -25,7 +25,7 @@ class PeminjamanController extends Controller
     public function index(Request $request): View
     {
         $peminjamans = Peminjaman::with('peminjam', 'detailPeminjamans.barang')
-            ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            ->when($request->status, fn($q) => $q->where('status', $request->status))
             ->orderByDesc('created_at')
             ->paginate(10)
             ->withQueryString();
@@ -36,6 +36,27 @@ class PeminjamanController extends Controller
     {
         $peminjaman->load('peminjam', 'admin', 'detailPeminjamans.barang', 'pengembalians');
         return view('admin.peminjaman.show', compact('peminjaman'));
+    }
+
+    public function bukaNotifikasi(string $id): RedirectResponse
+    {
+        $notif = Auth::guard('admin')->user()
+            ->notifications()
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $notif->markAsRead();
+
+        $peminjaman = Peminjaman::find($notif->data['peminjaman_id'] ?? null);
+
+        if (! $peminjaman) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('admin.peminjaman.show', [
+            'peminjaman' => $peminjaman,
+            'from' => $peminjaman->status === 'Diajukan' ? 'verifikasi' : null,
+        ]);
     }
 
     public function verifikasi(Request $request, Peminjaman $peminjaman): RedirectResponse
@@ -62,7 +83,7 @@ class PeminjamanController extends Controller
         foreach ($peminjaman->detailPeminjamans as $detail) {
             if ($detail->jumlah > $detail->barang->stok) {
                 return back()->withErrors([
-                    'keputusan' => 'Stok "'.$detail->barang->nama_barang.'" tidak lagi mencukupi ('.$detail->barang->stok.' tersisa).',
+                    'keputusan' => 'Stok "' . $detail->barang->nama_barang . '" tidak lagi mencukupi (' . $detail->barang->stok . ' tersisa).',
                 ]);
             }
         }
@@ -86,7 +107,7 @@ class PeminjamanController extends Controller
         foreach ($peminjaman->detailPeminjamans as $detail) {
             if ($detail->jumlah > $detail->barang->stok) {
                 return back()->withErrors([
-                    'konfirmasi' => 'Stok "'.$detail->barang->nama_barang.'" tidak lagi mencukupi ('.$detail->barang->stok.' tersisa).',
+                    'konfirmasi' => 'Stok "' . $detail->barang->nama_barang . '" tidak lagi mencukupi (' . $detail->barang->stok . ' tersisa).',
                 ]);
             }
         }
