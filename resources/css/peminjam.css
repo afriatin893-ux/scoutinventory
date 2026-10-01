@@ -1,15 +1,15 @@
 /* Peminjam UI - sudah dibersihkan dari class yang tidak dipakai */
 :root{
-    --sidebar-bg:#4e4038;
-    --sidebar-bg-light:#5f4f44;
-    --sidebar-active:#3a2f28;
-    --ink:#2b2620;
-    --muted:#8a8177;
-    --border:#e9e4dc;
-    --bg:#faf9f6;
+    --sidebar-bg:#34495e;
+    --sidebar-bg-light:#44596e;
+    --sidebar-active:#26323e;
+    --ink:#222b36;
+    --muted:#7c8794;
+    --border:#e3e8ee;
+    --bg:#f6f8fb;
     --white:#fff;
-    --accent:#a5673f;
-    --accent-soft:#f1e4d6;
+    --accent:#3f5c74;
+    --accent-soft:#e8edf1;
     --danger:#c0503a;
     --danger-bg:#fbeae4;
     --success:#5c7a54;
@@ -88,10 +88,10 @@ textarea{
 .panel{
     margin-bottom:1rem;
     overflow:hidden;
-    background:#f5eee7;
+    background:#eef2f6;
     border:1px solid var(--border);
     border-radius:var(--radius-lg);
-    box-shadow:0 4px 14px -10px rgba(30,25,20,.1);
+    box-shadow:0 4px 14px -10px rgba(20,30,45,.1);
 }
 
 .panel-header{
@@ -247,7 +247,7 @@ textarea.form-control{
 }
 
 .profile-photo-placeholder{
-    background:#f5eee7;
+    background:#eef2f6;
     color:var(--accent);
     font-size:.8rem;
 }
@@ -499,7 +499,7 @@ textarea.form-control{
     padding:.6rem 2.2rem .6rem .9rem;
     border:1px solid var(--border);
     border-radius:var(--radius-sm);
-    background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%238a8177" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>') no-repeat right .75rem center/14px;
+    background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%237c8794" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>') no-repeat right .75rem center/14px;
     -webkit-appearance:none;
     appearance:none;
     font-family:inherit;
@@ -608,7 +608,7 @@ textarea.form-control{
 .sidebar-link.active{
     background:rgba(255,255,255,.1);
     color:#fff; font-weight:700;
-    border-left-color:#e8c9a0;
+    border-left-color:#8fb3d6;
 }
 
 .sidebar-foot{
@@ -633,7 +633,7 @@ textarea.form-control{
     justify-content:space-between;
     gap:1rem;
     padding:0 1.75rem;
-    background:#f5eee7;
+    background:#eef2f6;
     border-bottom:1px solid var(--border);
 }
 
@@ -653,7 +653,7 @@ textarea.form-control{
     border:1px solid var(--border);
     background:#fff;
     cursor:pointer;
-    color:#6b6258;
+    color:#5c6773;
     font-size:1.05rem;
 }
 
@@ -703,7 +703,7 @@ textarea.form-control{
     background:#fff;
     border:1px solid var(--border);
     border-radius:var(--radius-md);
-    box-shadow:0 20px 40px -15px rgba(30,25,20,.2);
+    box-shadow:0 20px 40px -15px rgba(20,30,45,.2);
     padding:.5rem;
     display:none;
     z-index:30;
@@ -752,9 +752,9 @@ textarea.form-control{
     width:46px; height:46px; flex-shrink:0;
     border-radius:14px;
     background:linear-gradient(135deg, var(--sidebar-bg-light), var(--sidebar-bg));
-    color:#f1e4d6;
+    color:#e3ecf5;
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 8px 18px -8px rgba(30,25,20,.35);
+    box-shadow:0 8px 18px -8px rgba(20,30,45,.35);
 }
 
 .page-header-row h1{
@@ -813,14 +813,14 @@ textarea.form-control{
     align-items:center;
     gap:1.25rem;
     padding:1.4rem 1.6rem;
-    background:#f7eee5;
+    background:#e9eef5;
     border:1px solid var(--border);
     border-radius:var(--radius-lg);
-    box-shadow:0 4px 14px -10px rgba(30,25,20,.12);
+    box-shadow:0 4px 14px -10px rgba(20,30,45,.12);
 }
 
 .dash-stat:nth-child(2){
-    background:#eaf1f5;
+    background:#e3eefa;
 }
 
 .dash-stat-label{
@@ -847,12 +847,12 @@ textarea.form-control{
     background:#fff;
     border:1px solid var(--border);
     border-radius:var(--radius-lg);
-    box-shadow:0 4px 14px -10px rgba(30,25,20,.15);
+    box-shadow:0 4px 14px -10px rgba(20,30,45,.15);
     transition:transform .15s ease, box-shadow .15s ease;
 }
 
 .dash-menu-card:hover{
-    transform:translateY(-3px); box-shadow:0 14px 26px -14px rgba(30,25,20,.3);
+    transform:translateY(-3px); box-shadow:0 14px 26px -14px rgba(20,30,45,.3);
 }
 
 .dash-menu-icon{
@@ -893,12 +893,12 @@ textarea.form-control{
     border:1px solid var(--border);
     border-radius:var(--radius-lg);
     overflow:hidden;
-    box-shadow:0 4px 14px -10px rgba(30,25,20,.15);
+    box-shadow:0 4px 14px -10px rgba(20,30,45,.15);
     transition:transform .15s ease, box-shadow .15s ease;
 }
 
 .catalog-card:hover{
-    transform:translateY(-3px); box-shadow:0 14px 26px -14px rgba(30,25,20,.3);
+    transform:translateY(-3px); box-shadow:0 14px 26px -14px rgba(20,30,45,.3);
 }
 
 .catalog-photo{
@@ -908,8 +908,8 @@ textarea.form-control{
     justify-content:center;
     position:relative;
     overflow:hidden;
-    background:#f5eee7;
-    color:#c9b8a6;
+    background:#eef2f6;
+    color:#aab4c0;
 }
 
 .catalog-photo img{
@@ -1020,7 +1020,7 @@ textarea.form-control{
     background:#fff;
     border:1px solid var(--border);
     border-radius:var(--radius-lg);
-    box-shadow:0 4px 14px -10px rgba(30,25,20,.1);
+    box-shadow:0 4px 14px -10px rgba(20,30,45,.1);
 }
 
 .step{
@@ -1053,7 +1053,7 @@ textarea.form-control{
     display:flex; align-items:center; justify-content:center;
     border-radius:50%;
     border:2px solid var(--border);
-    background:#f5eee7;
+    background:#eef2f6;
     color:var(--muted);
     font-size:.8rem; font-weight:700;
 }

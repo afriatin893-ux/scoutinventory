@@ -17,7 +17,7 @@ class KategoriController extends Controller
     public function index(Request $request): View
     {
         $categories = Kategori::withCount('barangs')
-            ->when($request->filled('q'), fn ($query) => $query->where('nama_kategori', 'like', '%' . $request->q . '%'))
+            ->when($request->filled('q'), fn($query) => $query->where('nama_kategori', 'like', '%' . $request->q . '%'))
             ->orderBy('nama_kategori')
             ->paginate(10)
             ->withQueryString();
@@ -85,16 +85,17 @@ class KategoriController extends Controller
     public function destroy(Kategori $kategori): RedirectResponse
     {
         try {
+            $namaKategori = $kategori->nama_kategori;
+
             $kategori->delete();
         } catch (QueryException) {
             return redirect()
-
                 ->route('admin.kategori.index')
                 ->with('error', 'Kategori tidak bisa dihapus karena masih dipakai oleh barang.');
         }
 
         return redirect()
             ->route('admin.kategori.index')
-            ->with('status', 'Kategori berhasil dihapus.');
+            ->with('success', 'Kategori "' . $namaKategori . '" berhasil dihapus.');
     }
 }

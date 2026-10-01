@@ -12,6 +12,19 @@
 @endsection
 
 @section('content')
+    @if (session('status'))
+        <div class="kategori-notification kategori-notification-success">
+            <span>✓</span>
+            <span>{{ session('status') }}</span>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="kategori-notification kategori-notification-error">
+            <span>!</span>
+            <span>{{ session('error') }}</span>
+        </div>
+    @endif
     <div class="toolbar-row">
         <form method="GET" action="{{ route('admin.kategori.index') }}">
             <div class="search-input">
