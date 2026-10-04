@@ -22,182 +22,185 @@
 
 <body>
     <div class="app-shell">
-        <aside class="app-sidebar" id="appSidebar">
-            <div class="sidebar-brand">
+
+        {{-- ===== NAVBAR (satu, full width) ===== --}}
+        <header class="app-topbar">
+            <div class="topbar-brand">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Pramuka" class="sidebar-logo">
-                <div class="sidebar-brand-text">
-                    <span class="sidebar-brand-title">{{ __('Sistem Peminjaman') }}</span>
-                    <span class="sidebar-brand-sub">{{ __('Admin') }}</span>
-                </div>
+                <span class="app-topbar-title">{{ __('Sistem Peminjaman - Admin') }}</span>
             </div>
 
-            <nav class="sidebar-nav">
-                <a href="{{ route('admin.dashboard') }}"
-                    class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
-                        fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="9" rx="1.5" />
-                        <rect x="14" y="3" width="7" height="5" rx="1.5" />
-                        <rect x="14" y="12" width="7" height="9" rx="1.5" />
-                        <rect x="3" y="16" width="7" height="5" rx="1.5" />
-                    </svg>
-                    {{ __('Dashboard') }}
-                </a>
-                <a href="{{ route('admin.kategori.index') }}"
-                    class="sidebar-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
-                        fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24H4a1 1 0 0 0-1 1v5.59a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l5.59-5.59a2 2 0 0 0 0-2.82Z" />
-                        <circle cx="7.5" cy="7.5" r="1.2" />
-                    </svg>
-                    {{ __('Kelola Kategori Barang') }}
-                </a>
-                <a href="{{ route('admin.barang.index') }}"
-                    class="sidebar-link {{ request()->routeIs('admin.barang.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
-                        fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="m21 8-9-5-9 5 9 5 9-5Z" />
-                        <path d="M3 8v8l9 5 9-5V8" />
-                        <path d="M12 13v8" />
-                    </svg>
-                    {{ __('Kelola Data Barang') }}
-                </a>
-                <a href="{{ route('admin.peminjaman.pending') }}"
-                    class="sidebar-link {{ request()->routeIs('admin.peminjaman.pending') || (request()->routeIs('admin.peminjaman.show') && request('from') === 'verifikasi') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
-                        fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 11 12 14 22 4" />
-                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-                    </svg>
-                    {{ 'Verifikasi Pengajuan' }}
-                </a>
-                <a href="{{ route('admin.pengembalian.index') }}"
-                    class="sidebar-link {{ request()->routeIs('admin.pengembalian.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
-                        fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                        <path d="M3 3v5h5" />
-                        <path d="M12 7v5l4 2" />
-                    </svg>
-                    {{ 'Catat Pengembalian' }}
-                </a>
-                <a href="{{ route('admin.peminjaman.index') }}"
-                    class="sidebar-link {{ request()->routeIs('admin.peminjaman.index') || (request()->routeIs('admin.peminjaman.show') && request('from') !== 'verifikasi') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
-                        fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M8 6h13" />
-                        <path d="M8 12h13" />
-                        <path d="M8 18h13" />
-                        <path d="M3 6h.01" />
-                        <path d="M3 12h.01" />
-                        <path d="M3 18h.01" />
-                    </svg>
-                    {{ 'Riwayat Peminjaman' }}
-                </a>
-                <a href="{{ route('admin.profil.edit') }}"
-                    class="sidebar-link {{ request()->routeIs('admin.profil.*') ? 'active' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
-                        fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="8" r="4" />
-                        <path d="M4 21a8 8 0 0 1 16 0" />
-                    </svg>
-                    {{ __('Profil Admin') }}
-                </a>
-            </nav>
+            @php
+                $unread = Auth::guard('admin')->user()->unreadNotifications;
+            @endphp
 
-            <div class="sidebar-foot">{{ now()->translatedFormat('d/m/Y') }}<br>Sistem peminjaman &copy; {{ date('Y') }}</div>
-        </aside>
-
-        <div class="app-main">
-            <header class="app-topbar">
-                <span class="app-topbar-title">{{ __('Sistem Peminjaman - Admin') }}</span>
-
-                @php
-                    $unread = Auth::guard('admin')->user()->unreadNotifications;
-                @endphp
-
-                <div class="topbar-actions">
-                    <div class="dropdown-wrap">
-                        <button type="button" class="icon-btn" data-dropdown-toggle="notifDropdown">
-                            🔔
-                            @if ($unread->count())
-                                <span class="dot-badge">{{ $unread->count() }}</span>
-                            @endif
-                        </button>
-                        <div class="dropdown-panel" id="notifDropdown" style="min-width:280px;">
-                            @forelse ($unread as $n)
-                                <a href="{{ route('admin.notifikasi.buka', $n->id) }}" class="dropdown-notif-item">
-                                    {{ $n->data['pesan'] }}
-                                </a>
-                            @empty
-                                <div class="dropdown-empty">{{ __('Tidak ada notifikasi baru.') }}</div>
-                            @endforelse
-                        </div>
-                    </div>
-
-                    <div class="dropdown-wrap">
-                        <button type="button" class="user-trigger" data-dropdown-toggle="userDropdown">
-                            @if (Auth::guard('admin')->user()->foto)
-                                <img class="user-avatar"
-                                    src="{{ asset('storage/' . Auth::guard('admin')->user()->foto) }}"
-                                    alt="Foto admin">
-                            @else
-                                <span class="user-avatar-fallback"></span>
-                            @endif
-                            {{ Auth::guard('admin')->user()->nama ?? __('Admin') }}
-                        </button>
-                        <div class="dropdown-panel" id="userDropdown">
-                            <a class="dropdown-item"
-                                href="{{ route('admin.profil.edit') }}">{{ __('Profil Saya') }}</a>
-                            <button type="button" class="dropdown-item"
-                                onclick="document.getElementById('admin-logout-form').submit();">
-                                {{ __('Logout') }}
-                            </button>
-                            <form id="admin-logout-form" action="{{ route('logout') }}" method="POST"
-                                style="display:none;">
-                                @csrf
-                            </form>
-                        </div>
+            <div class="topbar-actions">
+                <div class="dropdown-wrap">
+                    <button type="button" class="icon-btn" data-dropdown-toggle="notifDropdown">
+                        🔔
+                        @if ($unread->count())
+                            <span class="dot-badge">{{ $unread->count() }}</span>
+                        @endif
+                    </button>
+                    <div class="dropdown-panel" id="notifDropdown" style="min-width:280px;">
+                        @forelse ($unread as $n)
+                            <a href="{{ route('admin.notifikasi.buka', $n->id) }}" class="dropdown-notif-item">
+                                {{ $n->data['pesan'] }}
+                            </a>
+                        @empty
+                            <div class="dropdown-empty">{{ __('Tidak ada notifikasi baru.') }}</div>
+                        @endforelse
                     </div>
                 </div>
-            </header>
 
-            <main class="app-content">
-                @hasSection('page-title')
-                    <div class="page-header-row">
-                        <span class="page-header-icon">
-                            @hasSection('page-icon')
-                                @yield('page-icon')
-                            @else
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
-                                    height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="3" y="3" width="7" height="9" rx="1.5" />
-                                    <rect x="14" y="3" width="7" height="5" rx="1.5" />
-                                    <rect x="14" y="12" width="7" height="9" rx="1.5" />
-                                    <rect x="3" y="16" width="7" height="5" rx="1.5" />
-                                </svg>
-                            @endif
-                        </span>
-                        <div>
-                            <h1>@yield('page-title')</h1>
-                            @hasSection('page-subtitle')
-                                <p class="page-subtitle">@yield('page-subtitle')</p>
-                            @endif
-                        </div>
+                <div class="dropdown-wrap">
+                    <button type="button" class="user-trigger" data-dropdown-toggle="userDropdown">
+                        @if (Auth::guard('admin')->user()->foto)
+                            <img class="user-avatar"
+                                src="{{ asset('storage/' . Auth::guard('admin')->user()->foto) }}"
+                                alt="Foto admin">
+                        @else
+                            <span class="user-avatar-fallback"></span>
+                        @endif
+                        {{ Auth::guard('admin')->user()->nama ?? __('Admin') }}
+                    </button>
+                    <div class="dropdown-panel" id="userDropdown">
+                        <a class="dropdown-item"
+                            href="{{ route('admin.profil.edit') }}">{{ __('Profil Saya') }}</a>
+                        <button type="button" class="dropdown-item"
+                            onclick="document.getElementById('admin-logout-form').submit();">
+                            {{ __('Logout') }}
+                        </button>
+                        <form id="admin-logout-form" action="{{ route('logout') }}" method="POST"
+                            style="display:none;">
+                            @csrf
+                        </form>
                     </div>
-                @endif
+                </div>
+            </div>
+        </header>
 
-                @if (session('success'))
-                    <div class="alert alert-success" role="alert">{{ session('success') }}</div>
-                @endif
+        {{-- ===== SIDEBAR + KONTEN ===== --}}
+        <div class="app-body">
+            <aside class="app-sidebar" id="appSidebar">
+                <nav class="sidebar-nav">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="9" rx="1.5" />
+                            <rect x="14" y="3" width="7" height="5" rx="1.5" />
+                            <rect x="14" y="12" width="7" height="9" rx="1.5" />
+                            <rect x="3" y="16" width="7" height="5" rx="1.5" />
+                        </svg>
+                        {{ __('Dashboard') }}
+                    </a>
+                    <a href="{{ route('admin.kategori.index') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M20.59 13.41 11 3.83A2 2 0 0 0 9.59 3.24H4a1 1 0 0 0-1 1v5.59a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l5.59-5.59a2 2 0 0 0 0-2.82Z" />
+                            <circle cx="7.5" cy="7.5" r="1.2" />
+                        </svg>
+                        {{ __('Kelola Kategori Barang') }}
+                    </a>
+                    <a href="{{ route('admin.barang.index') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.barang.*') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m21 8-9-5-9 5 9 5 9-5Z" />
+                            <path d="M3 8v8l9 5 9-5V8" />
+                            <path d="M12 13v8" />
+                        </svg>
+                        {{ __('Kelola Data Barang') }}
+                    </a>
+                    <a href="{{ route('admin.peminjaman.pending') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.peminjaman.pending') || (request()->routeIs('admin.peminjaman.show') && request('from') === 'verifikasi') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11 12 14 22 4" />
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                        </svg>
+                        {{ 'Verifikasi Pengajuan' }}
+                    </a>
+                    <a href="{{ route('admin.pengembalian.index') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.pengembalian.*') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                            <path d="M3 3v5h5" />
+                            <path d="M12 7v5l4 2" />
+                        </svg>
+                        {{ 'Catat Pengembalian' }}
+                    </a>
+                    <a href="{{ route('admin.peminjaman.index') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.peminjaman.index') || (request()->routeIs('admin.peminjaman.show') && request('from') !== 'verifikasi') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 6h13" />
+                            <path d="M8 12h13" />
+                            <path d="M8 18h13" />
+                            <path d="M3 6h.01" />
+                            <path d="M3 12h.01" />
+                            <path d="M3 18h.01" />
+                        </svg>
+                        {{ 'Riwayat Peminjaman' }}
+                    </a>
+                    <a href="{{ route('admin.profil.edit') }}"
+                        class="sidebar-link {{ request()->routeIs('admin.profil.*') ? 'active' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21a8 8 0 0 1 16 0" />
+                        </svg>
+                        {{ __('Profil Admin') }}
+                    </a>
+                </nav>
+            </aside>
 
-                @if (session('error'))
-                    <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
-                @endif
+            <div class="app-main">
+                <main class="app-content">
+                    @hasSection('page-title')
+                        <div class="page-header-row">
+                            <span class="page-header-icon">
+                                @hasSection('page-icon')
+                                    @yield('page-icon')
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20"
+                                        height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="9" rx="1.5" />
+                                        <rect x="14" y="3" width="7" height="5" rx="1.5" />
+                                        <rect x="14" y="12" width="7" height="9" rx="1.5" />
+                                        <rect x="3" y="16" width="7" height="5" rx="1.5" />
+                                    </svg>
+                                @endif
+                            </span>
+                            <div>
+                                <h1>@yield('page-title')</h1>
+                                @hasSection('page-subtitle')
+                                    <p class="page-subtitle">@yield('page-subtitle')</p>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
 
-                @yield('content')
-            </main>
+                    @if (session('success'))
+                        <div class="alert alert-success" role="alert">{{ session('success') }}</div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
+                    @endif
+
+                    @yield('content')
+                </main>
+
+                <footer class="app-footer">
+                    <span>&copy; {{ date('Y') }} {{ __('Sistem Peminjaman') }} &ndash; {{ __('Admin') }}</span>
+                    <span>{{ now()->translatedFormat('d F Y') }}</span>
+                </footer>
+            </div>
         </div>
     </div>
 
