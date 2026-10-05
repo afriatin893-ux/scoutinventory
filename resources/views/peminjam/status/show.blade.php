@@ -1,7 +1,7 @@
 @extends('layouts.peminjam')
 
 @section('page-title', __('Detail Status Peminjaman'))
-@section('page-subtitle', __('Dashboard Peminjam / Status Peminjaman / Detail'))
+@section('page-subtitle', __('Rincian pengajuan dan posisinya saat ini.'))
 @section('page-icon')
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
@@ -21,13 +21,14 @@
     };
 @endphp
 
-<div class="stepper">
-    @foreach ($steps as $value => $label)
-        <div class="step {{ $loop->index < $currentIndex ? 'done' : '' }} {{ $loop->index === $currentIndex ? 'current' : '' }}">
-            <span class="step-dot">{{ $loop->index < $currentIndex ? '✓' : $loop->iteration }}</span>
-            <span class="step-label">{{ $label }}</span>
+<div class="status-card">
+    @include('peminjam.partials.alur-status', ['peminjaman' => $peminjaman])
+    @if (strtolower($peminjaman->status) === 'ditolak')
+        <div class="loan-reject">
+            <b>{{ __('Alasan dari admin:') }}</b> {{ $peminjaman->catatan_admin ?: __('Tidak ada alasan yang dicantumkan.') }}
         </div>
-    @endforeach
+        <div class="status-actions"><a href="{{ route('peminjam.peminjaman.create') }}" class="btn btn-primary btn-sm">{{ __('Ajukan ulang') }}</a></div>
+    @endif
 </div>
 
 <div class="split-2">

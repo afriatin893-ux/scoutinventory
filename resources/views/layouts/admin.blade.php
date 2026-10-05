@@ -13,7 +13,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bitter:wght@600;800&display=swap"
         rel="stylesheet">
 
     <!-- External stylesheet -->
@@ -27,7 +27,10 @@
         <header class="app-topbar">
             <div class="topbar-brand">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Pramuka" class="sidebar-logo">
-                <span class="app-topbar-title">{{ __('Sistem Peminjaman - Admin') }}</span>
+                <div class="topbar-brand-text">
+                    <span class="app-topbar-title">{{ __('SCOUTINVENTORY') }}</span>
+                    <span class="app-topbar-sub">{{ __('praseda') }}</span>
+                </div>
             </div>
 
             @php
@@ -56,17 +59,15 @@
                 <div class="dropdown-wrap">
                     <button type="button" class="user-trigger" data-dropdown-toggle="userDropdown">
                         @if (Auth::guard('admin')->user()->foto)
-                            <img class="user-avatar"
-                                src="{{ asset('storage/' . Auth::guard('admin')->user()->foto) }}"
+                            <img class="user-avatar" src="{{ asset('storage/' . Auth::guard('admin')->user()->foto) }}"
                                 alt="Foto admin">
                         @else
-                            <span class="user-avatar-fallback"></span>
+                           <span class="user-avatar-fallback" aria-hidden="true">{{ Auth::guard('admin')->user()->inisial }}</span>
                         @endif
                         {{ Auth::guard('admin')->user()->nama ?? __('Admin') }}
                     </button>
                     <div class="dropdown-panel" id="userDropdown">
-                        <a class="dropdown-item"
-                            href="{{ route('admin.profil.edit') }}">{{ __('Profil Saya') }}</a>
+                        <a class="dropdown-item" href="{{ route('admin.profil.edit') }}">{{ __('Profil Saya') }}</a>
                         <button type="button" class="dropdown-item"
                             onclick="document.getElementById('admin-logout-form').submit();">
                             {{ __('Logout') }}
@@ -83,7 +84,21 @@
         {{-- ===== SIDEBAR + KONTEN ===== --}}
         <div class="app-body">
             <aside class="app-sidebar" id="appSidebar">
+
+                {{-- Kartu role --}}
+                <div class="sidebar-role">
+                    <span class="sidebar-role-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 3 4 6v6c0 4.5 3.2 8.2 8 9 4.8-.8 8-4.5 8-9V6l-8-3Z" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
+                    </span>
+                    <strong class="sidebar-role-name">{{ __('Administrator') }}</strong>
+                </div>
+
                 <nav class="sidebar-nav">
+                    <div class="sidebar-section">{{ __('Utama') }}</div>
                     <a href="{{ route('admin.dashboard') }}"
                         class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
@@ -95,6 +110,8 @@
                         </svg>
                         {{ __('Dashboard') }}
                     </a>
+
+                    <div class="sidebar-section">{{ __('Data Master') }}</div>
                     <a href="{{ route('admin.kategori.index') }}"
                         class="sidebar-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
@@ -115,6 +132,8 @@
                         </svg>
                         {{ __('Kelola Data Barang') }}
                     </a>
+
+                    <div class="sidebar-section">{{ __('Peminjaman') }}</div>
                     <a href="{{ route('admin.peminjaman.pending') }}"
                         class="sidebar-link {{ request()->routeIs('admin.peminjaman.pending') || (request()->routeIs('admin.peminjaman.show') && request('from') === 'verifikasi') ? 'active' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
@@ -122,7 +141,11 @@
                             <path d="M9 11 12 14 22 4" />
                             <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                         </svg>
-                        {{ 'Verifikasi Pengajuan' }}
+                        {{ __('Verifikasi Pengajuan') }}
+                        @php $menungguVerifikasi = \App\Models\Peminjaman::where('status', 'Diajukan')->count(); @endphp
+                        @if ($menungguVerifikasi > 0)
+                            <span class="sidebar-badge">{{ $menungguVerifikasi }}</span>
+                        @endif
                     </a>
                     <a href="{{ route('admin.pengembalian.index') }}"
                         class="sidebar-link {{ request()->routeIs('admin.pengembalian.*') ? 'active' : '' }}">
@@ -147,6 +170,8 @@
                         </svg>
                         {{ 'Riwayat Peminjaman' }}
                     </a>
+
+                    <div class="sidebar-section">{{ __('Akun') }}</div>
                     <a href="{{ route('admin.profil.edit') }}"
                         class="sidebar-link {{ request()->routeIs('admin.profil.*') ? 'active' : '' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17"
@@ -197,7 +222,7 @@
                 </main>
 
                 <footer class="app-footer">
-                    <span>&copy; {{ date('Y') }} {{ __('Sistem Peminjaman') }} &ndash; {{ __('Admin') }}</span>
+                    <span>&copy; {{ date('Y') }} {{ __('ScoutInventory') }} &ndash; {{ __('Admin') }}</span>
                     <span>{{ now()->translatedFormat('d F Y') }}</span>
                 </footer>
             </div>

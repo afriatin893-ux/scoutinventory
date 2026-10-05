@@ -43,13 +43,16 @@ class PengembalianController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'kondisi_barang' => ['required', 'string', 'max:50'],
+            'tanggal_pengembalian' => ['required', 'date', 'after_or_equal:' . $peminjaman->tanggal_pinjam, 'before_or_equal:today'],
             'foto_kondisi' => ['nullable', 'image', 'max:2048'],
             'catatan' => ['nullable', 'string'],
+        ], [
+            'tanggal_pengembalian.after_or_equal' => 'Tanggal pengembalian tidak boleh sebelum tanggal pinjam.',
+            'tanggal_pengembalian.before_or_equal' => 'Tanggal pengembalian tidak boleh melebihi hari ini.',
         ]);
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
-
         DB::transaction(function () use ($request, $peminjaman) {
             $fotoPath = null;
             if ($request->hasFile('foto_kondisi')) {
@@ -58,7 +61,7 @@ class PengembalianController extends Controller
             $jumlahKembali = $peminjaman->detailPeminjamans->sum('jumlah');
             Pengembalian::create([
                 'id_peminjaman' => $peminjaman->id_peminjaman,
-                'tanggal_pengembalian' => now()->toDateString(),
+                'tanggal_pengembalian' => $request->tanggal_pengembalian,
                 'jumlah_kembali' => $jumlahKembali,
                 'kondisi_barang' => $request->kondisi_barang,
                 'foto_kondisi' => $fotoPath,

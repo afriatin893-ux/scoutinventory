@@ -139,20 +139,38 @@
                 {{ __('Verifikasi Pengajuan') }}
             </div>
             <div class="action-panel-body">
-                <form method="POST" action="{{ route('admin.peminjaman.verifikasi', $peminjaman->id_peminjaman) }}">
+                <form method="POST" action="{{ route('admin.peminjaman.verifikasi', $peminjaman->id_peminjaman) }}" id="formVerifikasi">
                     @csrf
                     @method('PUT')
-                    <div class="form-group">
-                        <label class="form-label">{{ __('Catatan Admin (opsional)') }}</label>
-                        <textarea name="catatan_admin" class="form-control" rows="2"></textarea>
-                    </div>
                     <div class="form-actions">
-                        <button type="submit" name="keputusan" value="setuju"
-                            class="btn btn-primary">{{ __('Setujui') }}</button>
-                        <button type="submit" name="keputusan" value="tolak"
-                            class="btn btn-outline-danger">{{ __('Tolak') }}</button>
+                        <button type="submit" name="keputusan" value="setuju" class="btn btn-primary">{{ __('Setujui') }}</button>
+                        <button type="button" class="btn btn-outline-danger" id="btnBukaTolak">{{ __('Tolak') }}</button>
+                    </div>
+
+                    <div class="tolak-box {{ $errors->has('catatan_admin') ? 'open' : '' }}" id="tolakBox">
+                        <label class="form-label" for="catatan_admin">{{ __('Alasan penolakan (wajib diisi)') }}</label>
+                        <textarea id="catatan_admin" name="catatan_admin" class="form-control" rows="3"
+                            placeholder="{{ __('Contoh: stok tenda pada tanggal tersebut sedang dipakai kegiatan lain.') }}">{{ old('catatan_admin') }}</textarea>
+                        <div class="tolak-hint {{ $errors->has('catatan_admin') ? 'show' : '' }}" id="tolakHint">
+                            {{ $errors->first('catatan_admin') ?: __('Alasan wajib diisi agar peminjam tahu penyebabnya.') }}
+                        </div>
+                        <div class="form-actions" style="margin-top:.6rem;">
+                            <button type="submit" name="keputusan" value="tolak" class="btn btn-danger-solid" id="btnKirimTolak">{{ __('Kirim penolakan') }}</button>
+                        </div>
                     </div>
                 </form>
+                <script>
+                    document.getElementById('btnBukaTolak').addEventListener('click', function () {
+                        document.getElementById('tolakBox').classList.add('open');
+                        document.getElementById('catatan_admin').focus();
+                    });
+                    document.getElementById('btnKirimTolak').addEventListener('click', function (e) {
+                        if (!document.getElementById('catatan_admin').value.trim()) {
+                            e.preventDefault();
+                            document.getElementById('tolakHint').classList.add('show');
+                        }
+                    });
+                </script>
             </div>
         </div>
     @elseif ($peminjaman->status === 'Disetujui')
@@ -199,6 +217,11 @@
                         <div class="info-label">{{ __('Tanggal') }}</div>
                         <div class="info-value">
                             {{ \Carbon\Carbon::parse($pengembalian->tanggal_pengembalian)->format('d M Y') }}</div>
+                    </div>
+                    <div>
+                        <div class="info-label">{{ __('Ketepatan Waktu') }}</div>
+                        <span
+                            class="badge-pill {{ $pengembalian->keterangan_waktu['badge'] }}">{{ $pengembalian->keterangan_waktu['label'] }}</span>
                     </div>
                     <div>
                         <div class="info-label">{{ __('Jumlah Kembali') }}</div>

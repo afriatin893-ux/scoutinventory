@@ -20,7 +20,7 @@
                     @if ($peminjam->foto)
                         <img id="fotoPreview" src="{{ asset('storage/'.$peminjam->foto) }}" alt="Foto profil">
                     @else
-                        <div id="fotoPreview" class="profile-photo-placeholder">{{ __('Foto') }}</div>
+                        <div id="fotoPreview" class="profile-photo-placeholder">{{ $peminjam->inisial }}</div>
                     @endif
                 </div>
 

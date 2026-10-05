@@ -1,15 +1,15 @@
 :root {
-    --accent: #5c80a8;
-    --navy-600: #3f5c74;
-    --navy-700: #34495e;
-    --navy-800: #26323e;
-    --navy-900: #1b2630;
-    --ink: #20272f;
-    --muted: #7c8794;
+    --accent: #d9bf8a;
+    --khaki: #c2a56e;
+    --navy-600: #5a3a1e;
+    --navy-700: #4b3019;
+    --navy-800: #2b190b;
+    --navy-900: #1d1007;
+    --ink: #2b1a0d;
+    --muted: #7a6650;
     --danger: #e08a7a;
     --radius-sm: 12px;
 }
-
 * {
     box-sizing: border-box;
 }
@@ -38,8 +38,8 @@ a {
     padding: 1.5rem 1.25rem;
     position: relative;
     overflow-y: auto;
-    background:
-        linear-gradient(180deg,rgba(20, 30, 45, .55) 0%,rgba(15, 22, 32, .78) 100%),
+        background:
+        linear-gradient(180deg, rgba(43, 25, 11, .55) 0%, rgba(24, 13, 5, .82) 100%),
         url('/images/bgg.png') center bottom / cover no-repeat;
     background-blend-mode: multiply, normal;
 }
@@ -83,7 +83,7 @@ a {
 
     border-radius: 26px;
 
-    background: rgba(20, 28, 38, .5);
+        background: rgba(43, 25, 11, .55);
     border: 1px solid rgba(255, 255, 255, .14);
 
     backdrop-filter: blur(18px);
@@ -159,7 +159,7 @@ a {
 
 .field-shell:focus-within {
     border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(92, 128, 168, .18);
+        box-shadow: 0 0 0 4px rgba(194, 165, 110, .28);
 }
 
 .field-shell.has-error {
@@ -239,7 +239,7 @@ a {
     cursor: pointer;
     padding: .75rem 1rem;
     border-radius: 999px;
-    background: #fff;
+        background: var(--khaki);
     color: var(--navy-800);
     font-family: inherit;
     font-size: .9rem;

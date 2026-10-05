@@ -27,4 +27,20 @@ class Peminjam extends Authenticatable
     {
         return $this->hasMany(Peminjaman::class, 'id_peminjam', 'id_peminjam');
     }
+
+    /**
+     * Inisial nama untuk avatar saat belum ada foto.
+     * "Atun Prasetyo" => "AP", "atun" => "A"
+     */
+    public function getInisialAttribute(): string
+    {
+        $kata = preg_split('/\s+/', trim($this->nama ?? ''), -1, PREG_SPLIT_NO_EMPTY);
+
+        $inisial = '';
+        foreach (array_slice($kata, 0, 2) as $k) {
+            $inisial .= mb_strtoupper(mb_substr($k, 0, 1));
+        }
+
+        return $inisial !== '' ? $inisial : '?';
+    }
 }

@@ -40,9 +40,15 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $menunggu = Peminjaman::with(['peminjam', 'detailPeminjamans.barang'])
+            ->where('status', 'Diajukan')
+            ->latest()
+            ->take(5)
+            ->get();
+
         return view('admin.dashboard', compact(
             'admin', 'totalBarang', 'pengajuanMenunggu', 'sedangDipinjam',
-            'terlambatKembali', 'labelBulan', 'dataGrafik', 'barangTerpopuler'
+            'terlambatKembali', 'labelBulan', 'dataGrafik', 'barangTerpopuler', 'menunggu'
         ));
     }
 }

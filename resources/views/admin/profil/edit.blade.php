@@ -22,7 +22,7 @@
                         @if ($admin->foto)
                             <img id="fotoPreview" src="{{ asset('storage/' . $admin->foto) }}" alt="Foto profil">
                         @else
-                            <div id="fotoPreview" class="profile-photo-placeholder">{{ __('Foto') }}</div>
+                            <div id="fotoPreview" class="profile-photo-placeholder">{{ $admin->inisial }}</div>
                         @endif
                     </div>
 

@@ -18,20 +18,17 @@ class PeminjamanController extends Controller
     /**
      * Riwayat & status peminjaman milik peminjam yang sedang login.
      */
-    private const TABS = ['Diajukan', 'Disetujui', 'dipinjam', 'dikembalikan'];
-
     public function status(Request $request): View
     {
-        $tab = in_array($request->status, self::TABS) ? $request->status : 'Diajukan';
-
+        // Semua pengajuan yang masih berjalan, plus yang baru ditolak
+        // (supaya alasan penolakan langsung terlihat).
         $peminjamans = Peminjaman::with('detailPeminjamans.barang')
             ->where('id_peminjam', Auth::guard('peminjam')->id())
-            ->where('status', $tab)
+            ->whereIn('status', ['Diajukan', 'Disetujui', 'dipinjam', 'Ditolak'])
             ->orderByDesc('created_at')
-            ->paginate(10)
-            ->withQueryString();
+            ->paginate(10);
 
-        return view('peminjam.status.index', compact('peminjamans', 'tab'));
+        return view('peminjam.status.index', compact('peminjamans'));
     }
 
     public function statusShow(Peminjaman $peminjaman): View
@@ -42,15 +39,22 @@ class PeminjamanController extends Controller
         return view('peminjam.status.show', compact('peminjaman'));
     }
 
-    public function riwayat(): View
+    public function riwayat(Request $request): View
     {
+        $filter = in_array($request->f, ['selesai', 'ditolak']) ? $request->f : 'semua';
+
         $peminjamans = Peminjaman::with('detailPeminjamans.barang')
             ->where('id_peminjam', Auth::guard('peminjam')->id())
-            ->whereIn('status', ['dikembalikan', 'Ditolak'])
+            ->whereIn('status', match ($filter) {
+                'selesai' => ['dikembalikan'],
+                'ditolak' => ['Ditolak'],
+                default => ['dikembalikan', 'Ditolak'],
+            })
             ->orderByDesc('created_at')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
-        return view('peminjam.riwayat.index', compact('peminjamans'));
+        return view('peminjam.riwayat.index', compact('peminjamans', 'filter'));
     }
 
     public function riwayatShow(Peminjaman $peminjaman): View

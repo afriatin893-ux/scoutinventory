@@ -14,12 +14,18 @@ class BarangController extends Controller
     {
         $barangs = Barang::with('kategori')
             ->when($request->id_kategori, fn ($q) => $q->where('id_kategori', $request->id_kategori))
-            ->orderBy('nama_barang')
-            ->paginate(10)
+            ->when($request->q, fn ($q) => $q->where('nama_barang', 'like', '%' . $request->q . '%'))
+            ->when(
+                $request->urut === 'stok',
+                fn ($q) => $q->orderByDesc('stok')->orderBy('nama_barang'),
+                fn ($q) => $q->orderBy('nama_barang')
+            )
+            ->paginate(12)
             ->withQueryString();
 
-        $categories = Kategori::orderBy('nama_kategori')->get();
+        $categories = Kategori::withCount('barangs')->orderBy('nama_kategori')->get();
+        $totalSemua = Barang::count();
 
-        return view('peminjam.barang.index', compact('barangs', 'categories'));
+        return view('peminjam.barang.index', compact('barangs', 'categories', 'totalSemua'));
     }
 }

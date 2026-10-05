@@ -26,4 +26,20 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(Peminjaman::class, 'id_admin', 'id_admin');
     }
+
+    /**
+     * Inisial nama untuk avatar saat belum ada foto.
+     * "Admin Utama" => "AU", "Admin" => "A"
+     */
+    public function getInisialAttribute(): string
+    {
+        $kata = preg_split('/\s+/', trim($this->nama ?? ''), -1, PREG_SPLIT_NO_EMPTY);
+
+        $inisial = '';
+        foreach (array_slice($kata, 0, 2) as $k) {
+            $inisial .= mb_strtoupper(mb_substr($k, 0, 1));
+        }
+
+        return $inisial !== '' ? $inisial : '?';
+    }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.peminjam')
 
-@section('page-title', __('Form Pengajuan Peminjaman'))
-@section('page-subtitle', __('Dashboard Peminjam / Form Pengajuan'))
+@section('page-title', __('Form pengajuan'))
+@section('page-subtitle', __('Isi barang, tanggal, dan keperluan. Admin akan memverifikasi pengajuanmu.'))
 @section('page-icon')
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M12 12v6"/><path d="M9 15h6"/>
@@ -16,7 +16,7 @@
             'stok' => $b->stok,
         ])->values();
 
-        $idLama = old('id_barang', [request('barang', '')]);
+        $idLama = old('id_barang', (array) request('barang', ['']));
         $jumlahLama = old('jumlah', []);
         $barisAwal = collect($idLama)->map(fn ($id, $i) => [
             'id' => (string) $id,
@@ -32,8 +32,10 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('peminjam.peminjaman.store') }}" id="formPengajuan" class="split-2">
+    <form method="POST" action="{{ route('peminjam.peminjaman.store') }}" id="formPengajuan" class="form-layout">
         @csrf
+
+        <div class="form-main">
 
         <div class="panel">
             <div class="panel-header">
@@ -78,12 +80,20 @@
                             value="{{ old('penanggung_jawab') }}" required>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
-                    {{ __('Ajukan Peminjaman') }}
-                </button>
             </div>
         </div>
+        </div>
+
+        <aside class="panel sum-card">
+            <div class="panel-header">{{ __('Ringkasan pengajuan') }}</div>
+            <div class="panel-body">
+                <ul id="sumList" class="sum-list"></ul>
+                <p class="sum-note" id="sumNote">{{ __('Kamu akan dapat notifikasi saat admin selesai memverifikasi.') }}</p>
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                    {{ __('Kirim pengajuan') }}
+                </button>
+            </div>
+        </aside>
     </form>
 
     <script>
@@ -142,6 +152,28 @@
         const tglKembali = document.getElementById('tanggal_rencana_kembali');
         tglKembali.min = tglPinjam.value || '';
         tglPinjam.addEventListener('change', () => { tglKembali.min = tglPinjam.value; });
+
+        function ringkas() {
+            const ul = document.getElementById('sumList');
+            ul.innerHTML = '';
+            rows.querySelectorAll('.item-line').forEach(r => {
+                const sel = r.querySelector('select'), qty = r.querySelector('input');
+                if (!sel.value) return;
+                const li = document.createElement('li');
+                li.textContent = sel.options[sel.selectedIndex].text.replace(/ \(stok:.*\)/, '') + ' × ' + (qty.value || '?');
+                ul.appendChild(li);
+            });
+            if (!ul.children.length) ul.innerHTML = '<li class="sum-empty">Belum ada barang dipilih</li>';
+            if (tglPinjam.value && tglKembali.value) {
+                const hari = Math.round((new Date(tglKembali.value) - new Date(tglPinjam.value)) / 864e5) + 1;
+                document.getElementById('sumNote').textContent = 'Pinjam ' + tglPinjam.value + ' s/d ' + tglKembali.value + ' (' + hari + ' hari). Kamu akan dapat notifikasi saat admin selesai memverifikasi.';
+            }
+        }
+        document.getElementById('formPengajuan').addEventListener('input', ringkas);
+        document.getElementById('formPengajuan').addEventListener('click', () => setTimeout(ringkas));
+        ringkas();
+        // pilihan dari katalog sudah terpakai, kosongkan
+        try { sessionStorage.removeItem('pilihanBarang'); } catch (e) {}
 
         document.getElementById('formPengajuan').addEventListener('submit', function (e) {
             const btn = e.target.querySelector('button[type="submit"]');

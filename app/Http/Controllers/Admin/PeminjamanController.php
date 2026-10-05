@@ -64,7 +64,9 @@ class PeminjamanController extends Controller
         abort_unless($peminjaman->status === 'Diajukan', 400, 'Pengajuan ini sudah diproses sebelumnya.');
         $validated = $request->validate([
             'keputusan' => ['required', 'in:setuju,tolak'],
-            'catatan_admin' => ['nullable', 'string', 'max:1000'],
+            'catatan_admin' => ['required_if:keputusan,tolak', 'nullable', 'string', 'max:1000'],
+        ], [
+            'catatan_admin.required_if' => 'Alasan penolakan wajib diisi agar peminjam tahu penyebabnya.',
         ]);
         $admin = Auth::guard('admin')->user();
         if ($validated['keputusan'] === 'tolak') {
