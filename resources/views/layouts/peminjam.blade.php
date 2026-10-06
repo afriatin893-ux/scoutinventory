@@ -90,6 +90,7 @@
                 </div>
             </div>
         </header>
+        <div class="stripe-sandi" aria-hidden="true"></div>
 
         {{-- ===== SIDEBAR + KONTEN ===== --}}
         <div class="app-body">

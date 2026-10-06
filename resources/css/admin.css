@@ -1143,49 +1143,6 @@ textarea.form-control{resize:vertical;}
     color:var(--muted);
 }
 
-
-
-
-/* =====================================================================
-   TEMA PRAMUKA (coklat) - admin tetap memakai sidebar
-   ===================================================================== */
-:root{
-    --sidebar-bg:#3a2310;--sidebar-bg-light:#4b3019;--sidebar-active:#2b190b;
-    --ink:#2b1a0d;--muted:#7a6650;--border:#d9cdb4;--bg:#ede6d6;
-    --accent:#5a3a1e;--accent-soft:#efe6d2;
-    --danger:#b3261e;--danger-bg:#f8e3e0;--success:#4f6b2f;--success-bg:#e6ecd9;
-    --info:#7a6650;--info-bg:#efe6d2;--gold:#8a6a25;--gold-bg:#f1e5c4;
-    --khaki:#c2a56e;--brown:#5a3a1e;--font-judul:'Bitter',Georgia,serif;
-}
-h1,h2,.dash-section-title,.panel-header{font-family:var(--font-judul);}
-
-.app-topbar{background:var(--sidebar-active);border-bottom:0;}
-.app-topbar-title{font-family:var(--font-judul);color:#f3ebda;}
-.app-topbar-sub{color:#b9a78c;}
-.sidebar-logo{border-color:var(--khaki);}
-.app-sidebar{background:var(--sidebar-bg);}
-.sidebar-role{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);}
-.sidebar-role-icon{background:var(--khaki);color:var(--sidebar-active);}
-.sidebar-section{color:#9c8967;}
-.sidebar-link{color:#d9cbb0;}
-.sidebar-link:hover{background:rgba(255,255,255,.08);}
-.sidebar-link.active{background:var(--khaki);color:var(--sidebar-active);border-left-color:var(--khaki);}
-.sidebar-badge{margin-left:auto;background:var(--danger);color:#fff;font-size:.7rem;font-weight:800;border-radius:999px;padding:.05rem .5rem;}
-.sidebar-link:focus-visible,.icon-btn:focus-visible,.user-trigger:focus-visible{outline:3px solid var(--khaki);outline-offset:2px;}
-.app-footer{background:var(--sidebar-active);color:#b9a78c;border-top:0;}
-
-.page-header-icon{background:var(--brown);color:var(--khaki);}
-.page-header-row h1{font-family:var(--font-judul);}
-
-.dash-stat{background:var(--accent-soft);border-left:6px solid var(--brown);}
-.dash-stat-icon{background:var(--bg);color:var(--brown);}
-.dash-stat-gold{background:var(--accent-soft);border-left-color:var(--khaki);}
-.dash-stat-gold .dash-stat-icon{color:var(--gold);}
-.dash-stat-blue{background:var(--accent-soft);border-left-color:var(--success);}
-.dash-stat-blue .dash-stat-icon{color:var(--success);}
-.dash-stat-danger{background:var(--danger-bg);border-left-color:var(--danger);}
-.dash-stat-value{font-family:var(--font-judul);}
-
 .dash-menu-card{background:#fbf8f1;border-radius:16px;}
 .dash-menu-card:hover{border-color:var(--brown);}
 .dash-menu-icon{background:var(--brown);color:var(--khaki);}

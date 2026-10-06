@@ -247,11 +247,19 @@ textarea.form-control{
 }
 
 .profile-photo-placeholder{
-    background:var(--khaki);
-    color:#3a2310;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100px;
+    height:100px;
+    background:#efe6d2;
+    color:var(--accent);
+    border:3px solid var(--accent);
+    border-radius:50%;
     font-family:var(--font-judul);
-    font-size:2.2rem;
+    font-size:.8rem;
     font-weight:800;
+    text-align:center;
 }
 
 .pagination-wrap{
@@ -1263,6 +1271,7 @@ h1,h2,.dash-section-title,.hero-peminjam h1{font-family:var(--font-judul);}
 .app-topbar{background:var(--sidebar-active);gap:1.25rem;}
 .app-topbar-title{font-family:var(--font-judul);color:#f3ebda;}
 .sidebar-logo{border-color:var(--khaki);}
+.stripe-sandi{height:5px;background:linear-gradient(90deg,#b3261e 50%,#fff 50%);background-size:40px 100%;}
 
 .top-nav{display:flex;gap:.25rem;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;}
 .top-nav::-webkit-scrollbar{display:none;}
@@ -1337,6 +1346,7 @@ h1,h2,.dash-section-title,.hero-peminjam h1{font-family:var(--font-judul);}
 @media (prefers-reduced-motion:reduce){*{transition:none !important;}}
 
 
+
 /* =====================================================================
    Halaman peminjam: band judul, katalog, form, status, riwayat
    ===================================================================== */
@@ -1407,3 +1417,4 @@ h1,h2,.dash-section-title,.hero-peminjam h1{font-family:var(--font-judul);}
     .riwayat-row{grid-template-columns:1fr;gap:.35rem;}
 }
 @media (max-width:480px){.catalog-grid{grid-template-columns:1fr;}}
+

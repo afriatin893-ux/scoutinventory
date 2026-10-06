@@ -5,7 +5,6 @@
 
 @section('content')
 
-
     <div class="dash-stats dash-stats-4">
         <div class="dash-stat">
             <span class="dash-stat-icon">
